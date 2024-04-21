@@ -1,6 +1,7 @@
 # Nuxt 3 Association Manager App
 
-:warning: **This is heavily work in progress** and built in public during streams/videos.
+> [!WARNING]
+> **This is heavily work in progress** and built in public during streams/videos.
 
 ---
 
