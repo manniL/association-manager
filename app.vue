@@ -1,5 +1,15 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <div>
-    <NuxtWelcome />
-  </div>
+  <AppHeader />
+
+  <UMain>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UMain>
+
+  <AppFooter />
+  <UNotifications />
 </template>
