@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "association-manager",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,15 +7,21 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate:sqlite"
   },
   "dependencies": {
     "@nuxt/ui-pro": "^1.1.0",
+    "@nuxthub/core": "^0.5.11",
+    "drizzle-orm": "^0.30.9",
+    "drizzle-zod": "^0.5.1",
     "nuxt": "^3.11.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.20.17",
+    "wrangler": "^3.51.2",
     "zod": "^3.22.5"
   }
 }

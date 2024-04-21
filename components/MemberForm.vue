@@ -4,87 +4,20 @@ import type { FormSubmitEvent } from '#ui/types'
 
 // stripe / ... / TODO in the future if someone needs other payment providers
 const paymentTypes = ['SEPA', 'CASH'] as const
-type PaymentType = typeof paymentTypes[number]
 
 // TODO: Read from Database
 const paymentRoles = ['Full', 'Free'] as const
 
-// TODO: IDs for them, not only names
-// Maybe add "months"
-const paymentScheduleOptions = [
-  {
-    id: 'monthly',
-    name: 'Monthly',
-    monthInterval: 1,
-  },
-  {
-    id: 'quarterly',
-    name: 'Quarterly',
-    monthInterval: 3,
-  },
-  {
-    id: 'yearly',
-    name: 'Yearly',
-    monthInterval: 12,
-  },
-] as const
+const schema = memberFormSchema
 
-// TODO: Sync with above
-const paymentScheduleIds = ['monthly', 'quarterly', 'yearly'] as const
-
-const gender = ['Prefer not to say', 'Male', 'Female', 'Other'] as const
-
-const schema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  gender: z.enum(gender),
-  membershipId: z.string().min(1),
-  company: z.string().optional(),
-  address: z.object({
-    street: z.string().min(1),
-    city: z.string().min(1),
-    zip: z.string().min(1),
-    state: z.string().optional(),
-    country: z.string().optional(), // TODO: List
-  }),
-  joinDate: z.coerce.date().optional(), // TODO: pipe to avoid null/invalid
-  leaveDate: z.coerce.date().optional(),
-  birthDate: z.coerce.date().optional(),
-  phone: z.string().optional(),
-  email: z.string().email().optional(),
-  notes: z.string().optional(),
-  sepaData: z.object({
-    accountHolder: z.string().optional(),
-    iban: z.string(), // Use ibantools
-    bic: z.string().optional(), // To validate / infer "somehow"
-  }).optional(), // Only optional if paymentType is not SEPA
-  paymentRole: z.enum(paymentRoles), // TODO
-  paymentSchedule: z.enum(paymentScheduleIds),
-  payment: z.discriminatedUnion('type', [
-    z.object({
-      type: z.literal('SEPA'),
-      data: z.object({
-        accountHolder: z.string().optional(),
-        iban: z.string(), // Use ibantools
-        bic: z.string(), // To validate / infer "somehow"
-      })
-    }),
-    z.object({
-      type: z.literal('CASH'),
-      data: z.object({})
-    })]
-  )
-})
-
-// joinDate: Date
-type Schema = z.output<typeof schema>
+export type Schema = z.output<typeof schema>
 
 const state = reactive<Schema>({
   // Personal info
   firstName: '',
   lastName: '',
-  company: '',
-  gender: 'Prefer not to say',
+  company: undefined,
+  gender: 'no-answer',
   address: {
     street: '',
     city: '',
@@ -95,7 +28,7 @@ const state = reactive<Schema>({
   birthDate: undefined,
   phone: undefined,
   email: undefined,
-  membershipId: '', // auto generate that?
+  membershipId: '', // TODO FOR THE FUTURE: auto generate that somehow?
   joinDate: undefined,
   leaveDate: undefined,
   notes: undefined,
@@ -107,9 +40,13 @@ const state = reactive<Schema>({
   paymentSchedule: 'yearly',
 })
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with data
-  console.log(event.data)
+const emit = defineEmits<{
+  change: [id: number]
+  submit: [data: Schema]
+}>()
+
+function onSubmit(event: FormSubmitEvent<Schema>) {
+  emit('submit', event.data)
 }
 </script>
 
@@ -126,7 +63,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormGroup>
 
       <UFormGroup required label="Gender" name="gender">
-        <USelect v-model="state.gender" :options="gender" />
+        <USelect v-model="state.gender" :options="genderOptions" />
       </UFormGroup>
 
       <UFormGroup label="Company" name="company" hint="(optional)">
