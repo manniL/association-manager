@@ -3,7 +3,7 @@
   * Member status/roles (groups you can configure)
 * Finances
   * Fee/Payment for each member role
-  * SEPA XML export for monthly/half a year/yearly
+  * SEPA XML export for monthly/quarterly/half a year/yearly
     * Save payment data with users + roles back then
     * Immutable payment data in the DB
   * Payment Roles:
@@ -11,10 +11,14 @@
     * Amount
   * Payment Schedule: How often (monthly, quarterly, half a year, yearly, none at all [if no amount set])
 
+* i18n
+  * Static but needed
+
 * Import old data
   * CSV import to update member roles (Firstname, Lastname, DOB if duplicates, new role) => update member role
 
 * Auth: Basic Auth (h3-basic-auth)
+  * Later on: proper user auth
 
 Tech:
 
