@@ -5,6 +5,8 @@ import { genderValues, paymentScheduleIds } from './constants.js'
 // TODO: Read from Database
 const paymentRoles = ['Full', 'Free'] as const
 
+export type PaymentType = z.infer<typeof memberFormSchema>['payment']
+
 export const memberFormSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),

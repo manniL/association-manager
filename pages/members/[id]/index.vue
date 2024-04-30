@@ -2,11 +2,11 @@
 const route = useRoute()
 const id = route.params.id
 
-const user = await useFetch(`/api/members/${id}`)
+const { data: user } = await useFetch(`/api/members/${id}`)
 </script>
 
 <template>
-  <div>
+  <pre>
     {{ user }}
-  </div>
+  </pre>
 </template>

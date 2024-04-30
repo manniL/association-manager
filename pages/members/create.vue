@@ -6,7 +6,7 @@ async function onSubmit(validateData: Schema) {
     method: 'POST',
     body: validateData
   })
-  // Redirect to the members page
+  navigateTo('/members/')
 }
 </script>
 

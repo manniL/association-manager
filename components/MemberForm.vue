@@ -2,15 +2,21 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
+
+const schema = memberFormSchema
+export type Schema = z.output<typeof schema>
+
+const props = defineProps<{
+  initialState?: Schema
+}>()
+
 // stripe / ... / TODO in the future if someone needs other payment providers
 const paymentTypes = ['SEPA', 'CASH'] as const
 
 // TODO: Read from Database
 const paymentRoles = ['Full', 'Free'] as const
 
-const schema = memberFormSchema
 
-export type Schema = z.output<typeof schema>
 
 const state = reactive<Schema>({
   // Personal info
@@ -39,6 +45,18 @@ const state = reactive<Schema>({
   paymentRole: 'Full',
   paymentSchedule: 'yearly',
 })
+
+const formattedBirthDate = computed(() => {
+  if (!state.birthDate) return ''
+  return new Date(state.birthDate).toLocaleDateString()
+})
+
+watch(() => props.initialState, (initialState) => {
+  if (initialState) {
+    // TODO: Maybe deep merge it later?
+    Object.assign(state, initialState)
+  }
+}, { immediate: true })
 
 const emit = defineEmits<{
   change: [id: number]
@@ -70,8 +88,22 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
         <UInput v-model="state.company" />
       </UFormGroup>
 
-      <UFormGroup label="Date of Birth" name="birthDate" hint="(optional)">
-        <UInput v-model="state.birthDate" />
+      <UFormGroup
+        label="Date of Birth" name="birthDate" hint="(optional)"
+        :ui="{ container: '' }"
+      >
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UInput
+            icon="i-heroicons-calendar-days-20-solid"
+            :value="formattedBirthDate"
+            type="date-local"
+            size="md"
+            class="w-full"
+          />
+          <template #panel>
+            <AppDatePicker mode="date" v-model="state.birthDate" />
+          </template>
+        </UPopover>
       </UFormGroup>
 
       <UFormGroup label="Phone" name="phone" hint="(optional)">

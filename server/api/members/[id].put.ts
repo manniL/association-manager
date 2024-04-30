@@ -2,7 +2,8 @@ import { members } from "~/server/database/schema.js"
 import { memberFormSchema } from "~/server/utils/schema.js"
 
 export default defineEventHandler(async (event) => {
-  // Parse it through the Member form's schema
+  const id = getRouterParam(event, 'id')
+
   const body = await readValidatedBody(event, memberFormSchema.parse)
 
   const { firstName, lastName, company, gender, birthDate, phone, email,
@@ -18,9 +19,9 @@ export default defineEventHandler(async (event) => {
   const sepaIban = 'iban' in paymentData ? paymentData.iban : undefined
   const sepaBic = 'bic' in paymentData ? paymentData.bic : undefined
 
-  const insertedEntry = await useDrizzle()
-    .insert(members)
-    .values({
+  const updatedEntry = await useDrizzle()
+    .update(members)
+    .set({
       firstName, // TODO: Check why TS is complaining
       lastName,
       company,
@@ -45,8 +46,13 @@ export default defineEventHandler(async (event) => {
       sepaBic,
       createdAt: new Date(),
       updatedAt: new Date()
-    }).returning().get()
+    })
+    .where(eq(members.id, Number(id)))
+    .returning().get()
 
-  // Then, use the db representation to insert the new Member, before validate through Zod
-  return insertedEntry
+  if(!updatedEntry) {
+    throw createError({ statusCode: 422, message: 'No Member found for that operation' })
+  }
+  
+  return updatedEntry
 })

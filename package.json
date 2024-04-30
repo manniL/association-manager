@@ -13,9 +13,11 @@
   "dependencies": {
     "@nuxt/ui-pro": "^1.1.0",
     "@nuxthub/core": "^0.5.11",
+    "date-fns": "^3.6.0",
     "drizzle-orm": "^0.30.9",
     "drizzle-zod": "^0.5.1",
     "nuxt": "^3.11.2",
+    "v-calendar": "^3.1.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
