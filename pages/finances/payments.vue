@@ -7,16 +7,22 @@ const links = [[{
   to: '/finances/payments/',
 }]]
 
+const route = useRoute()
+const isCreatePage = computed(() => route.path.endsWith('create'))
+
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Payments" />
+      <UDashboardNavbar title="Payments">
+        <template #right>
+          <UButton v-if="!isCreatePage" to="/finances/payments/create" label="New payment" trailing-icon="i-heroicons-plus" color="gray" />
+        </template>
+      </UDashboardNavbar>
 
-      <UDashboardToolbar v-if="!$route.path.endsWith('create')" class="py-0 px-1.5 overflow-x-auto">
+      <UDashboardToolbar v-if="!isCreatePage" class="py-0 px-1.5 overflow-x-auto">
         <UHorizontalNavigation :links="links" />
-        <UButton to="/finances/payments/create" label="New payment" trailing-icon="i-heroicons-plus" color="gray" />
       </UDashboardToolbar>
 
       <NuxtPage />

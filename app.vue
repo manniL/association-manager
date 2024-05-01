@@ -54,8 +54,6 @@ const groups: Group[] = [{
   commands: links.flatMap(link => [{ ...link, shortcuts: link.tooltip?.shortcuts }, ...(link.children?.map(c => ({ ...c, shortcuts: c.tooltip?.shortcuts })) ?? [])]).filter(Boolean)
 }]
 
-console.log(links.flatMap(link => [{ ...link, shortcuts: link.tooltip?.shortcuts }, ...(link.children?.map(c => ({ ...c, shortcuts: c.tooltip?.shortcuts })) ?? [])]).filter(Boolean))
-
 useServerHead({
   meta: [
     { key: 'theme-color', name: 'theme-color', content: color }
