@@ -45,3 +45,11 @@ export const insertMemberSchema = createInsertSchema(members);
 
 // Schema for selecting a Member - can be used to validate API responses
 export const selectMemberSchema = createSelectSchema(members);
+
+export const paymentRoles = sqliteTable('payment_roles', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+
+  name: text('name').notNull(),
+  amount: integer('amount').notNull(),
+  notes: text('notes')
+})

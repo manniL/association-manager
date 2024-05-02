@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Schema } from '~/components/PaymentRoleForm.vue'
-async function onSubmit(validateData: Schema) {
+import type { SchemaOutput } from '~/components/PaymentRoleForm.vue'
+async function onSubmit(validateData: SchemaOutput) {
   await $fetch('/api/finances/roles', {
     method: 'POST',
     body: validateData

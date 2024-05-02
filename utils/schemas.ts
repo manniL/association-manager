@@ -46,6 +46,6 @@ export const memberFormSchema = z.object({
 
 export const paymentRoleFormSchema = z.object({
   name: z.string().min(1),
-  amount: z.number().min(0),
+  amount: z.string().transform(s => Number(s.replaceAll(',', '')) * 100),
   notes: z.string().optional()
 })
