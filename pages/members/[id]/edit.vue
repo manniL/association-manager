@@ -19,7 +19,11 @@ const { data } = await useFetch(`/api/members/${id}`, {
 
 // TODO: Better type narrowing please
 
-const editTitle = `Edit member "${data.value && 'count' in data.value ? '' : `${data.value?.firstName} ${data.value?.lastName}`}"`
+const editTitle = `${data.value && 'count' in data.value ? '' : `${data.value?.firstName} ${data.value?.lastName}`}`
+
+useHead({
+  title: editTitle
+})
 
 async function onSubmit (validateData: Schema) {
   console.log(validateData)

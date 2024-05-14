@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
   const sepaIban = 'iban' in paymentData ? paymentData.iban : undefined
   const sepaBic = 'bic' in paymentData ? paymentData.bic : undefined
 
+
   const updatedEntry = await useDrizzle()
     .update(members)
     .set({

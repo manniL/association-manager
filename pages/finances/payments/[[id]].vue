@@ -2,7 +2,7 @@
 import type { TransformedMemberWithId as Member } from '~/types'
 
 const defaultColumns = [
-{
+  {
     key: 'firstName',
     label: 'First Name',
     sortable: true
@@ -18,6 +18,16 @@ const defaultColumns = [
     sortable: true
   },
   {
+    key: 'paymentSchedule',
+    label: 'Payment Schedule',
+    sortable: true
+  },
+  {
+    key: 'paymentRole',
+    label: 'Payment Role',
+    sortable: true
+  },
+  {
     key: 'payment.type',
     label: 'Payment Type',
     sortable: true
@@ -29,30 +39,57 @@ const sort = ref({ column: 'name', direction: 'asc' as const })
 
 const columns = computed(() => defaultColumns.filter(column => selectedColumns.value.includes(column)))
 
-const payees = ref([
+const noId = [
   {
     id: 1,
     firstName: 'Tester V.',
     lastName: 'Testington',
     paymentRole: 'Vollzahler',
-    paymentSchedule: 'Monthly',
+    paymentSchedule: 'Quarterly',
     payment: {
       type: 'CASH',
       data: {}
     },
-    amount: 1000
+    amount: 1000 * 3
   },
   {
     id: 2,
-    firstName: 'Tester Erm.',
-    lastName: 'Testington',
+    firstName: 'Erm.',
+    lastName: 'ABC',
     paymentRole: 'Ermäßigt',
     paymentSchedule: 'Quarterly',
     payment: {
       type: 'SEPA',
       data: {}
     },
-    amount: 30000
+    amount: 950 * 3
+  },
+]
+
+const id = [
+  {
+    id: 1,
+    firstName: 'Tester V.',
+    lastName: 'Testington',
+    paymentRole: 'Vollzahler',
+    paymentSchedule: 'Quarterly',
+    payment: {
+      type: 'CASH',
+      data: {}
+    },
+    amount: 1000 * 3
+  },
+  {
+    id: 2,
+    firstName: 'Erm.',
+    lastName: 'ABC',
+    paymentRole: 'Ermäßigt',
+    paymentSchedule: 'Quarterly',
+    payment: {
+      type: 'SEPA',
+      data: {}
+    },
+    amount: 950 * 3
   },
   {
     id: 3,
@@ -64,16 +101,22 @@ const payees = ref([
       type: 'SEPA',
       data: {}
     },
-    amount: 1000
+    amount: 1000 * 6
   },
-])
+]
 
+const route = useRoute()
+const payees = computed(() => !route.params.id ? noId : id)
+
+useHead({
+  title: () => route.params.id ? `Payment #${route.params.id}` : 'Payment Preview'
+})
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Next Payment" :badge="payees.length" />
+      <UDashboardNavbar title="Next Payment" :badge="`${payees.length} members`" />
 
       <!-- TODO: Bring back loading -->
       <UTable v-model:sort="sort" :rows="payees" :columns="columns" sort-mode="manual" class="w-full"

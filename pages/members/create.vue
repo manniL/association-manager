@@ -8,6 +8,10 @@ async function onSubmit (validateData: Schema) {
   })
   navigateTo('/members/')
 }
+
+useHead({
+  title: 'Add new member'
+})
 </script>
 
 <template>

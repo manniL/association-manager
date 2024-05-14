@@ -10,6 +10,9 @@ const links = [[{
 const route = useRoute()
 const isCreatePage = computed(() => route.path.endsWith('create'))
 
+useHead({
+  title: 'Payments'
+})
 </script>
 
 <template>

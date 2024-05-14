@@ -7,6 +7,10 @@ async function onSubmit(validateData: SchemaOutput) {
   })
   navigateTo('/finances/roles')
 }
+
+useHead({
+  title: 'Add new payment role'
+})
 </script>
 
 <template>

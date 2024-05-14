@@ -58,13 +58,6 @@ const formattedLeaveDate = computed(() => {
   return formatDate(state.leaveDate)
 })
 
-function formatDate (dateString?: Date | string) {
-  if (!dateString) {
-    return ''
-  }
-  return new Date(dateString).toLocaleDateString()
-}
-
 watch(() => props.initialState, (initialState) => {
   if (initialState) {
     // TODO: Maybe deep merge it later?

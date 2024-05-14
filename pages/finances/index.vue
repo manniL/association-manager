@@ -1,3 +1,9 @@
+<script setup lang="ts">
+useHead({
+  title: 'Finances'
+})
+</script>
+
 <template>
   <div class="mt-16 grid grid-cols-2 gap-16">
     <UDashboardCard title="Payments" description="Create a new payment or view previous payments"

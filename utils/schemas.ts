@@ -49,3 +49,7 @@ export const paymentRoleFormSchema = z.object({
   amount: z.string().transform(s => Number(s.replaceAll(',', '')) * 100),
   notes: z.string().optional()
 })
+
+export const paymentFormSchema = z.object({
+  date: z.coerce.date(), // TODO: pipe to avoid null/invalid
+})

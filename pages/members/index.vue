@@ -67,6 +67,10 @@ defineShortcuts({
     input.value?.input?.focus()
   }
 })
+
+useHead({
+  title: 'Member'
+})
 </script>
 
 <template>
@@ -107,18 +111,14 @@ defineShortcuts({
 
       <UTable v-model:sort="sort" :rows="members" :columns="columns" :loading="pending" @select="onSelect"
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">
-        <template #name-data="{ row }">
-          <div class="flex items-center gap-3">
-            <UAvatar v-bind="row.avatar" :alt="row.name" size="xs" />
-
-            <span class="text-gray-900 dark:text-white font-medium">{{ row.name }}</span>
-          </div>
+        <template #birthDate-data="{ row }">
+          {{ formatDate(row.birthDate) }}
         </template>
-
-        <template #status-data="{ row }">
-          <UBadge :label="row.status"
-            :color="row.status === 'subscribed' ? 'green' : row.status === 'bounced' ? 'orange' : 'red'"
-            variant="subtle" class="capitalize" />
+        <template #joinDate-data="{ row }">
+          {{ formatDate(row.joinDate) }}
+        </template>
+        <template #leaveDate-data="{ row }">
+          {{ formatDate(row.leaveDate) }}
         </template>
       </UTable>
     </UDashboardPanel>

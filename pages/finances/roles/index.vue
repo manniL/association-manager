@@ -41,6 +41,9 @@ function onSelect(row: Member) {
   return navigateTo(`/finances/roles/${row.id}/edit`)
 }
 
+useHead({
+  title: 'Payment Roles'
+})
 </script>
 
 <template>

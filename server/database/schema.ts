@@ -9,7 +9,7 @@ export const members = sqliteTable('members_2', {
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   company: text('company'),
-  gender: text('gender', { enum: genderValues }),
+  gender: text('gender', { enum: genderValues }).notNull(),
   birthDate: integer('birth_date', { mode: 'timestamp' }),
   phone: text('phone'),
   email: text('email').unique(),

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const items = [
   [
     {
@@ -19,6 +18,10 @@ const items = [
     }
   ]
 ]
+
+useHead({
+  title: 'Home'
+})
 
 const { data: countData } = await useFetch('/api/members/count')
 </script>
