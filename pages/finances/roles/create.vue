@@ -10,8 +10,12 @@ async function onSubmit(validateData: SchemaOutput) {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-4xl">Add a new payment role</h1>
-    <PaymentRoleForm class="mt-8" @submit="onSubmit" />
-  </div>
+  <UDashboardPage>
+    <UDashboardPanel grow>
+      <UDashboardNavbar title="Add a new payment role" />
+      <UDashboardPanelContent>
+        <PaymentRoleForm class="mt-8" @submit="onSubmit" />
+      </UDashboardPanelContent>
+    </UDashboardPanel>
+  </UDashboardPage>
 </template>
