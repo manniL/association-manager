@@ -23,7 +23,7 @@ useHead({
   title: 'Home'
 })
 
-const { data: countData } = await useFetch('/api/members/count')
+const { data: countData } = await useFetch('/api/members/info/count')
 </script>
 
 <template>
