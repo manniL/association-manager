@@ -30,3 +30,13 @@ Tech:
 
 Future:
   * Conditions to update member roles (e.g. after 1 year, or certain age)
+
+more:
+
+AssociationManager
+
+* "Breaks" for members (multiple join/leave dates)
+* Change Status manually, before/after payment
+  * Default for cash: No
+  * Default for SEPA: Yes 
+  * Also being able to get single SEPA file

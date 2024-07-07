@@ -41,7 +41,7 @@ function transformMember(member: DrizzleMember): TransformedMemberWithId {
     firstName,
     lastName,
     company: company ?? undefined,
-    gender: 'no-answer', // TODO: Map backwards
+    gender,
     birthDate: birthDate ?? undefined,
     phone: phone ?? undefined,
     email: email ?? undefined,

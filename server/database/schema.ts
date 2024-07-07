@@ -9,7 +9,7 @@ export const members = sqliteTable('members_2', {
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   company: text('company'),
-  gender: text('gender', { enum: genderValues }),
+  gender: text('gender', { enum: genderValues }).notNull(),
   birthDate: integer('birth_date', { mode: 'timestamp' }),
   phone: text('phone'),
   email: text('email').unique(),
@@ -45,3 +45,11 @@ export const insertMemberSchema = createInsertSchema(members);
 
 // Schema for selecting a Member - can be used to validate API responses
 export const selectMemberSchema = createSelectSchema(members);
+
+export const paymentRoles = sqliteTable('payment_roles', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+
+  name: text('name').notNull(),
+  amount: integer('amount').notNull(),
+  notes: text('notes')
+})

@@ -47,8 +47,15 @@ const state = reactive<Schema>({
 })
 
 const formattedBirthDate = computed(() => {
-  if (!state.birthDate) return ''
-  return new Date(state.birthDate).toLocaleDateString()
+  return formatDate(state.birthDate)
+})
+
+const formattedJoinDate = computed(() => {
+  return formatDate(state.joinDate)
+})
+
+const formattedLeaveDate = computed(() => {
+  return formatDate(state.leaveDate)
 })
 
 watch(() => props.initialState, (initialState) => {
@@ -59,11 +66,10 @@ watch(() => props.initialState, (initialState) => {
 }, { immediate: true })
 
 const emit = defineEmits<{
-  change: [id: number]
   submit: [data: Schema]
 }>()
 
-function onSubmit(event: FormSubmitEvent<Schema>) {
+function onSubmit (event: FormSubmitEvent<Schema>) {
   emit('submit', event.data)
 }
 </script>
@@ -88,18 +94,10 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
         <UInput v-model="state.company" />
       </UFormGroup>
 
-      <UFormGroup
-        label="Date of Birth" name="birthDate" hint="(optional)"
-        :ui="{ container: '' }"
-      >
+      <UFormGroup label="Date of Birth" name="birthDate" hint="(optional)" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
-          <UInput
-            icon="i-heroicons-calendar-days-20-solid"
-            :value="formattedBirthDate"
-            type="date-local"
-            size="md"
-            class="w-full"
-          />
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedBirthDate" type="date-local" size="md"
+            class="w-full" />
           <template #panel>
             <AppDatePicker mode="date" v-model="state.birthDate" />
           </template>
@@ -146,12 +144,24 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
 
       <!-- TODO: Add date picker *please* -->
 
-      <UFormGroup label="Join Date" name="joinDate" hint="(optional)">
-        <UInput v-model="state.joinDate" />
+      <UFormGroup label="Join Date" name="joinDate" hint="(optional)" :ui="{ container: '' }">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedJoinDate" type="date-local" size="md"
+            class="w-full" />
+          <template #panel>
+            <AppDatePicker mode="date" v-model="state.joinDate" />
+          </template>
+        </UPopover>
       </UFormGroup>
 
-      <UFormGroup label="Leave Date" name="leaveDate" hint="(optional)">
-        <UInput v-model="state.leaveDate" />
+      <UFormGroup label="Leave Date" name="leaveDate" hint="(optional)" :ui="{ container: '' }">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedLeaveDate" type="date-local" size="md"
+            class="w-full" />
+          <template #panel>
+            <AppDatePicker mode="date" v-model="state.leaveDate" />
+          </template>
+        </UPopover>
       </UFormGroup>
     </div>
 
