@@ -31,8 +31,13 @@ const paymentScheduleOptions = [
     monthInterval: 3,
   },
   {
+    id: 'half-yearly',
+    name: 'Bi-Anually',
+    monthInterval: 6,
+  },
+  {
     id: 'yearly',
-    name: 'Yearly',
+    name: 'Anually',
     monthInterval: 12,
   },
 ] as const
