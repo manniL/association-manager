@@ -5,9 +5,6 @@ const id = useRoute().params.id
 
 const { data } = await useFetch(`/api/members/${id}`, {
   transform (data) {
-    if (data && 'count' in data) {
-      return data
-    }
     return {
       ...data,
       birthDate: data.birthDate ? new Date(data.birthDate) : undefined,
@@ -19,7 +16,7 @@ const { data } = await useFetch(`/api/members/${id}`, {
 
 // TODO: Better type narrowing please
 
-const editTitle = `${data.value && 'count' in data.value ? '' : `${data.value?.firstName} ${data.value?.lastName}`}`
+const editTitle = `${data.value?.firstName} ${data.value?.lastName}`
 
 useHead({
   title: editTitle
@@ -41,7 +38,7 @@ async function onSubmit (validateData: Schema) {
     <UDashboardPanel grow>
       <UDashboardNavbar :title="editTitle" />
       <UDashboardPanelContent>
-        <MemberForm v-if="!(data && 'count' in data)" :initial-state="data!" class="mt-8" @submit="onSubmit" />
+        <MemberForm :initial-state="data!" class="mt-8" @submit="onSubmit" />
       </UDashboardPanelContent>
     </UDashboardPanel>
   </UDashboardPage>
