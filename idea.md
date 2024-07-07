@@ -24,6 +24,7 @@ Tech:
 * Member data saved in D1 (CF)
   * Same for "payment data"
   * Validate IBAN via [this package](https://github.com/Simplify/ibantools).
+  * Get BIC from IBAN via ???
   * Create Direct Debit XML through [sepa package](https://www.npmjs.com/package/sepa#creating-an-xml-directdebit-document)
 ---
 

@@ -182,7 +182,7 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
         <UFormGroup required label="IBAN" name="IBAN">
           <UInput v-model="state.payment.data.iban" />
         </UFormGroup>
-        <UFormGroup label="BIC" name="BIC">
+        <UFormGroup label="BIC" name="BIC" required>
           <UInput v-model="state.payment.data.bic" />
         </UFormGroup>
       </div>
