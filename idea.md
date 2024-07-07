@@ -9,7 +9,6 @@
   * Payment Roles:
     * Name + ID
     * Amount
-  * Payment Schedule: How often (monthly, quarterly, half a year, yearly, none at all [if no amount set])
 
 * i18n
   * Static but needed
