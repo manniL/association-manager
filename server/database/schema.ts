@@ -51,5 +51,11 @@ export const paymentRoles = sqliteTable('payment_roles', {
 
   name: text('name').notNull(),
   amount: integer('amount').notNull(),
-  notes: text('notes')
+  notes: text('notes'),
+  
+  // Meta
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
 })
+
+export const selectPaymentRoleSchema = createSelectSchema(paymentRoles);

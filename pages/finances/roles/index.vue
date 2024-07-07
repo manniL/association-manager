@@ -19,23 +19,7 @@ const sort = ref({ column: 'name', direction: 'asc' as const })
 
 const columns = computed(() => defaultColumns.filter(column => selectedColumns.value.includes(column)))
 
-const paymentRoles = ref([
-  {
-    id: 1,
-    name: 'Ehrenmitglied',
-    amount: 0
-  },
-  {
-    id: 2,
-    name: 'Vollzahler',
-    amount: 1000
-  },
-  {
-    id: 3,
-    name: 'Ermäßigt',
-    amount: 950
-  }
-])
+const { data: paymentRoles } = await useFetch<Member[]>('/api/finances/roles', { default: () => [] })
 
 function onSelect(row: Member) {
   return navigateTo(`/finances/roles/${row.id}/edit`)
