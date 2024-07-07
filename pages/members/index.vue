@@ -56,7 +56,8 @@ const query = computed(() => ({
   order: sort.value.direction
 }))
 
-const { data: members, pending } = await useFetch<Member[]>('/api/members', { query, default: () => [] })
+const { data: members, pending } = await useFetch('/api/members', { query, default: () => [] })
+const { data: paymentRoles } = await useFetch('/api/finances/roles')
 
 function onSelect(row: Member) {
   return navigateTo(`/members/${row.id}/edit`)
@@ -113,6 +114,9 @@ useHead({
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">
         <template #birthDate-data="{ row }">
           {{ formatDate(row.birthDate) }}
+        </template>
+        <template #paymentRole-data="{ row }">
+          {{ paymentRoles?.find(role => role.id === row.paymentRole)?.name }}
         </template>
         <template #joinDate-data="{ row }">
           {{ formatDate(row.joinDate) }}

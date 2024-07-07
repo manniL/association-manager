@@ -2,6 +2,21 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { genderValues, paymentScheduleIds } from '../../utils/constants';
 
+
+export const paymentRoles = sqliteTable('payment_roles', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+
+  name: text('name').notNull(),
+  amount: integer('amount').notNull(),
+  notes: text('notes'),
+  
+  // Meta
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+})
+
+export const selectPaymentRoleSchema = createSelectSchema(paymentRoles);
+
 export const members = sqliteTable('members_2', {
   id: integer('id').primaryKey({ autoIncrement: true }),
 
@@ -31,7 +46,7 @@ export const members = sqliteTable('members_2', {
   sepaAccountHolder: text('sepa_account_holder'),
   sepaIban: text('sepa_iban'),
   sepaBic: text('sepa_bic'),
-  paymentRole: integer('payment_role').notNull(), // TODO: Foreign key to payment_roles
+  paymentRole: integer('payment_role').notNull().references(() => paymentRoles.id),
   paymentSchedule: text('payment_schedule', { enum: paymentScheduleIds }).notNull(),
   paymentType: text('payment_type', { enum: ['cash', 'sepa'] }).notNull(),
 
@@ -45,17 +60,3 @@ export const insertMemberSchema = createInsertSchema(members);
 
 // Schema for selecting a Member - can be used to validate API responses
 export const selectMemberSchema = createSelectSchema(members);
-
-export const paymentRoles = sqliteTable('payment_roles', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-
-  name: text('name').notNull(),
-  amount: integer('amount').notNull(),
-  notes: text('notes'),
-  
-  // Meta
-  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
-})
-
-export const selectPaymentRoleSchema = createSelectSchema(paymentRoles);
