@@ -3,7 +3,7 @@ CREATE TABLE `members_2` (
 	`first_name` text NOT NULL,
 	`last_name` text NOT NULL,
 	`company` text,
-	`gender` text,
+	`gender` text NOT NULL,
 	`birth_date` integer,
 	`phone` text,
 	`email` text,
@@ -22,6 +22,15 @@ CREATE TABLE `members_2` (
 	`payment_role` integer NOT NULL,
 	`payment_schedule` text NOT NULL,
 	`payment_type` text NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `payment_roles` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`amount` integer NOT NULL,
+	`notes` text,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL
 );
