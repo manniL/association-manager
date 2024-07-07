@@ -14,8 +14,6 @@ const { data } = await useFetch(`/api/members/${id}`, {
   }
 })
 
-// TODO: Better type narrowing please
-
 const editTitle = `${data.value?.firstName} ${data.value?.lastName}`
 
 useHead({

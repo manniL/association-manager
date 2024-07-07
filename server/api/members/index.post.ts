@@ -14,6 +14,8 @@ export default defineEventHandler(async (event) => {
     }
   } = body
 
+  await checkForPaymentRole(paymentRole)
+
   const sepaAccountHolder = 'accountHolder' in paymentData ? paymentData.accountHolder : undefined
   const sepaIban = 'iban' in paymentData ? paymentData.iban : undefined
   const sepaBic = 'bic' in paymentData ? paymentData.bic : undefined
@@ -50,3 +52,4 @@ export default defineEventHandler(async (event) => {
   // Then, use the db representation to insert the new Member, before validate through Zod
   return insertedEntry
 })
+

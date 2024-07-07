@@ -54,7 +54,7 @@ function transformMember(member: DrizzleMember): TransformedMemberWithId {
     joinDate: joinDate ?? undefined,
     leaveDate: leaveDate ?? undefined,
     notes: notes ?? undefined,
-    paymentRole: paymentRole === 0 ? 'Full' : 'Free', // TODO: Map backwards
+    paymentRole: String(paymentRole), // TODO: Can we keep that as number?
     paymentSchedule,
     payment
   }

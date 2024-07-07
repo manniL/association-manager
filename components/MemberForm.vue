@@ -13,9 +13,8 @@ const props = defineProps<{
 // stripe / ... / TODO in the future if someone needs other payment providers
 const paymentTypes = ['SEPA', 'CASH'] as const
 
-// TODO: Read from Database
-const paymentRoles = ['Full', 'Free'] as const
-
+const { data: rawPaymentRoles } = await useFetch('/api/finances/roles')
+const paymentRoles = computed(() => rawPaymentRoles.value?.map((role) => ({ value: role.id, label: role.name})))
 
 
 const state = reactive<Schema>({

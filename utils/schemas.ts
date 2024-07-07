@@ -2,9 +2,6 @@ import { z } from 'zod'
 export { insertMemberSchema, selectMemberSchema } from '~/server/database/schema'
 import { genderValues, paymentScheduleIds } from './constants.js'
 
-// TODO: Read from Database
-const paymentRoles = ['Full', 'Free'] as const
-
 export type PaymentType = z.infer<typeof memberFormSchema>['payment']
 
 export const memberFormSchema = z.object({
@@ -26,7 +23,7 @@ export const memberFormSchema = z.object({
   phone: z.string().optional(),
   email: z.string().email().optional(),
   notes: z.string().optional(),
-  paymentRole: z.enum(paymentRoles), // TODO
+  paymentRole: z.string(), // TODO: Make more strict?
   paymentSchedule: z.enum(paymentScheduleIds),
   payment: z.discriminatedUnion('type', [
     z.object({
