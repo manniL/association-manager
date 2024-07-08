@@ -31,6 +31,7 @@ Tech:
 Future:
   * Conditions to update member roles (e.g. after 1 year, or certain age)
   * Start for Fiscal Year
+  * Prorate mid-year/month/... joiners
 
 more:
 

@@ -19,7 +19,7 @@ export const genderOptions = [
 
 export const genderValues = ['male', 'female', 'other', 'no-answer'] as const satisfies Exclude<typeof genderOptions[number]['value'], undefined>[] 
 
-const paymentScheduleOptions = [
+export const paymentScheduleOptions = [
   {
     id: 'monthly',
     name: 'Monthly',
@@ -32,16 +32,18 @@ const paymentScheduleOptions = [
   },
   {
     id: 'half-yearly',
-    name: 'Bi-Anually',
+    name: 'Bi-Annually',
     monthInterval: 6,
   },
   {
     id: 'yearly',
-    name: 'Anually',
+    name: 'Annually',
     monthInterval: 12,
   },
 ] as const
 
-export const paymentScheduleIds = [
-  'monthly', 'quarterly', 'yearly'
-] as const satisfies typeof paymentScheduleOptions[number]['id'][]
+export type PaymentScheduleIds = typeof paymentScheduleOptions[number]['id']
+
+export const paymentScheduleIds: PaymentScheduleIds[] = [
+  'monthly', 'quarterly', 'half-yearly', 'yearly'
+] as const
