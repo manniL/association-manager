@@ -4,5 +4,14 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxthub/core'],
   hub: {
     database: true,
+  },
+  nitro: {
+    typescript: {
+      tsConfig: {
+        compilerOptions: {
+          types: ["vitest/importMeta"]
+        },
+      }
+    }
   }
 })
