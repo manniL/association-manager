@@ -44,6 +44,6 @@ export const paymentScheduleOptions = [
 
 export type PaymentScheduleIds = typeof paymentScheduleOptions[number]['id']
 
-export const paymentScheduleIds: PaymentScheduleIds[] = [
+export const paymentScheduleIds = [
   'monthly', 'quarterly', 'half-yearly', 'yearly'
 ] as const

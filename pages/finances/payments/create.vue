@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { SchemaOutput } from '~/components/PaymentForm.vue'
 
-// TODO: Add next payment date and "who is impacted"
-
 async function onSubmit(validateData: SchemaOutput) {
-  alert('this is not implemented yet')
-  navigateTo('/finances/payment')
+  const payment = await $fetch('/api/finances/payments', {
+    method: 'POST',
+    body: validateData
+  })
+  navigateTo(`/finances/payments/${payment.id}`)
 }
 </script>
 

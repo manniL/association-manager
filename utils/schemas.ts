@@ -32,6 +32,8 @@ export const memberFormSchema = z.object({
         accountHolder: z.string().optional(),
         iban: z.string(), // Use ibantools
         bic: z.string(), // To validate / infer "somehow"
+        mandateId: z.string(),
+        mandateDate: z.coerce.date(),
       })
     }),
     z.object({
@@ -48,5 +50,6 @@ export const paymentRoleFormSchema = z.object({
 })
 
 export const paymentFormSchema = z.object({
-  date: z.coerce.date(), // TODO: pipe to avoid null/invalid
+  startDate: z.coerce.date().optional(), // TODO: pipe to avoid null/invalid
+  collectionDate: z.coerce.date(), // TODO: pipe to avoid null/invalid
 })

@@ -1,23 +1,17 @@
-* CRUD around members
-  * Name, join date, leave date, ...
-  * Member status/roles (groups you can configure)
-* Finances
-  * Fee/Payment for each member role
-  * SEPA XML export for monthly/quarterly/half a year/yearly
-    * Save payment data with users + roles back then
-    * Immutable payment data in the DB
-  * Payment Roles:
-    * Name + ID
-    * Amount
+* Fix Auth
 
-* i18n
-  * Static but needed
+* Migration from CSV to feed to DB
+* i18n (manual work)
+* Creditor details (env variables or KV entry)
+* Delete options in general
+* Delete Payment (super dangerous operation) [soft delete]
+* Investigate bug to remove join date, leave date
+* Payment Preview
+* Offer Single Download for XMLs
+* Member pagination
 
 * Import old data
   * CSV import to update member roles (Firstname, Lastname, DOB if duplicates, new role) => update member role
-
-* Auth: Basic Auth (h3-basic-auth)
-  * Later on: proper user auth
 
 Tech:
 
@@ -32,13 +26,8 @@ Future:
   * Conditions to update member roles (e.g. after 1 year, or certain age)
   * Start for Fiscal Year
   * Prorate mid-year/month/... joiners
+  * Set up timezone to use for all dates
 
 more:
 
-AssociationManager
-
 * "Breaks" for members (multiple join/leave dates)
-* Change Status manually, before/after payment
-  * Default for cash: No
-  * Default for SEPA: Yes 
-  * Also being able to get single SEPA file

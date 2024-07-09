@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
+const { data: isFirstPayment } = await useFetch('/api/finances/payments/info/is-first-payment')
 
 const schema = paymentFormSchema
 export type Schema = z.input<typeof schema>
@@ -13,7 +14,8 @@ const props = defineProps<{
 
 
 const state = reactive<Schema>({
-  date: new Date()
+  startDate: undefined, 
+  collectionDate: new Date()
 })
 
 watch(() => props.initialState, (initialState) => {
@@ -32,20 +34,37 @@ function onSubmit (event: FormSubmitEvent<SchemaOutput>) {
   emit('submit', result)
 }
 
-const formattedBirthDate = computed(() => {
-  return formatDate(state.date)
+const formattedStartDate = computed(() => {
+  return formatDate(state.startDate)
+})
+
+const formattedCollectionDate = computed(() => {
+  return formatDate(state.collectionDate)
 })
 </script>
 
 <template>
   <UForm :schema="schema" :state="state" @submit="onSubmit">
+    <div class="mb-8" v-if="isFirstPayment">
+      <h2 class="text-xl">This is your first payment! which start date do you want to choose?</h2>
 
-    <UFormGroup label="Date of Next Payment" name="date" :ui="{ container: '' }">
+      <UFormGroup class="mt-4" label="Start Date for the first payment" name="startDate" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
-          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedBirthDate" type="date-local" size="md"
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedStartDate" type="date-local" size="md"
             class="w-full" />
           <template #panel>
-            <AppDatePicker mode="date" v-model="state.date" />
+            <AppDatePicker mode="date" v-model="state.startDate" />
+          </template>
+        </UPopover>
+      </UFormGroup>
+    </div>
+
+    <UFormGroup label="Collection Date of Next Payment" name="collectionDate" :ui="{ container: '' }">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedCollectionDate" type="date-local" size="md"
+            class="w-full" />
+          <template #panel>
+            <AppDatePicker mode="date" v-model="state.collectionDate" />
           </template>
         </UPopover>
       </UFormGroup>

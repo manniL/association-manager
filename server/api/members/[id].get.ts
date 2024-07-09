@@ -29,11 +29,21 @@ function transformMember(member: DrizzleMember): TransformedMemberWithId {
     id, firstName, lastName, company, gender, birthDate, phone, email, street, city, zip, state, country,
     membershipId, joinDate, leaveDate, notes, paymentRole, paymentSchedule, paymentType, sepaAccountHolder,
     sepaIban,
-    sepaBic
+    sepaBic,
+    sepaMandateDate,
+    sepaMandateId
   } = member
 
   const payment: Readonly<PaymentType> = paymentType === 'sepa'
-    ? { type: 'SEPA', data: { accountHolder: sepaAccountHolder ?? undefined, iban: sepaIban as string, bic: sepaBic as string } } as const
+    ? {
+      type: 'SEPA', data: {
+        accountHolder: sepaAccountHolder ?? undefined,
+        iban: sepaIban as string, 
+        bic: sepaBic as string,
+        mandateDate: sepaMandateDate as Date,
+        mandateId: sepaMandateId as string,
+      }
+    } as const
     : { type: 'CASH', data: {} } as const
 
   return {
