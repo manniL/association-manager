@@ -1,15 +1,21 @@
 import { addMonths, startOfMonth } from "date-fns"
 import type { PaymentScheduleIds } from '~/utils/constants'
 
-type Member = {
-  id: number,
-  paymentRoleAmount: number,
-  paymentSchedule: PaymentScheduleIds,
-  joinDate?: Date,
+export type SimplifiedMember = {
+  id: number
+  firstName: string,
+  lastName: string,
+  joinDate?: Date
   leaveDate?: Date
+  paymentSchedule: PaymentScheduleIds
+  paymentRole: {
+    amount: number,
+    id: number,
+    name: string
+  }
 }
 
-export function getAllPayeeInformation(members: Member[], previousPaymentDate: Date, iterations = 0) {
+export function getAllPayeeInformation(members: SimplifiedMember[], previousPaymentDate: Date, iterations = 0) {
   // Failsafe at 13 months after -> No payment because nobody there
   if (iterations > 12) {
     throw new Error('No payees found after 12 months.')
@@ -18,7 +24,7 @@ export function getAllPayeeInformation(members: Member[], previousPaymentDate: D
   // Get all users that
   // Have a payment role which is not free of charge
   // Have a join date
-  const membersWithFee = members.filter(member => member.paymentRoleAmount > 0 && member.joinDate)
+  const membersWithFee = members.filter(member => member.paymentRole.amount > 0 && member.joinDate)
   const paymentDate = getNextPaymentDate(previousPaymentDate)
 
   const possiblePayees = membersWithFee.filter(member => {
@@ -36,6 +42,7 @@ export function getAllPayeeInformation(members: Member[], previousPaymentDate: D
  * @returns Date indicating the first day of the next month after the previous payment date
  */
 function getNextPaymentDate(previousPaymentDate: Date) {
+  // TODO: Double check UTC times
   const nextPaymentDate = startOfMonth(addMonths(previousPaymentDate, 1))
   return nextPaymentDate
 }
@@ -43,92 +50,108 @@ function getNextPaymentDate(previousPaymentDate: Date) {
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest
   it('covers the basic case', () => {
-    const members: Member[] = [{
+    const members: SimplifiedMember[] = [{
       id: 3,
-      paymentRoleAmount: 500,
+      paymentRole: { amount: 500, id: 1, name: '' },
+      firstName: '',
+      lastName: '',
       paymentSchedule: 'monthly',
-      joinDate: new Date('2000-01-01')
+      joinDate: new Date('2000-01-01T00:00:00')
     }]
-    const previousPaymentDate = new Date('2024-01-01')
+    const previousPaymentDate = new Date('2024-01-01T00:00:00')
     expect(getAllPayeeInformation(members, previousPaymentDate).payees.map(p => p.id)).toEqual([members[0].id])
-    // TODO: Fix test to ensure paymentDate works expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate.getTime()).toEqual(new Date('2024-02-01').getTime())
+    expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate).toEqual(new Date('2024-02-01T00:00:00'))
   })
 
   it('removes members who did not join yet', () => {
-    const members: Member[] = [
+    const members: SimplifiedMember[] = [
       {
         id: 3,
-        paymentRoleAmount: 500,
+        paymentRole: { amount: 500, id: 1, name: '' },
+        firstName: '',
+        lastName: '',
         paymentSchedule: 'monthly',
 
-        joinDate: new Date('2000-01-01')
+        joinDate: new Date('2000-01-01T00:00:00')
       },
       {
         id: -1,
-        paymentRoleAmount: 500,
+        paymentRole: { amount: 500, id: 1, name: '' },
+        firstName: '',
+        lastName: '',
         paymentSchedule: 'monthly',
 
       }
     ]
-    const previousPaymentDate = new Date('2024-01-01')
+    const previousPaymentDate = new Date('2024-01-01T00:00:00')
     expect(getAllPayeeInformation(members, previousPaymentDate).payees.map(p => p.id)).toEqual([members[0].id])
-    // TODO: Fix test to ensure paymentDate works expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate.getTime()).toEqual(new Date('2024-02-01').getTime())
+    expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate).toEqual(new Date('2024-02-01T00:00:00'))
   })
 
   it('removes members with no fee', () => {
-    const members: Member[] = [
+    const members: SimplifiedMember[] = [
       {
         id: 3,
-        paymentRoleAmount: 500,
+        paymentRole: { amount: 500, id: 1, name: '' },
+        firstName: '',
+        lastName: '',
         paymentSchedule: 'monthly',
 
-        joinDate: new Date('2000-01-01')
+        joinDate: new Date('2000-01-01T00:00:00')
       },
       {
         id: -1,
-        paymentRoleAmount: 0,
+        paymentRole: { amount: 0 , id: 1, name: ''},
+        firstName: '',
+        lastName: '',
         paymentSchedule: 'monthly',
-        joinDate: new Date('2000-01-01')
+        joinDate: new Date('2000-01-01T00:00:00')
       }
     ]
-    const previousPaymentDate = new Date('2024-01-01')
+    const previousPaymentDate = new Date('2024-01-01T00:00:00')
     expect(getAllPayeeInformation(members, previousPaymentDate).payees.map(p => p.id)).toEqual([members[0].id])
-    // TODO: Fix test to ensure paymentDate works expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate.getTime()).toEqual(new Date('2024-02-01').getTime())
+    expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate).toEqual(new Date('2024-02-01T00:00:00'))
   }),
 
     it('removes members who left already', () => {
-      const members: Member[] = [
+      const members: SimplifiedMember[] = [
         {
           id: 3,
-          paymentRoleAmount: 500,
+          paymentRole: { amount: 500, id: 1, name: '' },
+          firstName: '',
+          lastName: '',
           paymentSchedule: 'monthly',
 
-          joinDate: new Date('2000-01-01')
+          joinDate: new Date('2000-01-01T00:00:00')
         },
         {
           id: -1,
-          paymentRoleAmount: 0,
+          paymentRole: { amount: 0, id: 1, name: '' },
+          firstName: '',
+          lastName: '',
           paymentSchedule: 'monthly',
-          joinDate: new Date('2000-01-01'),
-          leaveDate: new Date('2000-02-01')
+          joinDate: new Date('2000-01-01T00:00:00'),
+          leaveDate: new Date('2000-02-01T00:00:00')
         }
       ]
-      const previousPaymentDate = new Date('2024-01-01')
+      const previousPaymentDate = new Date('2024-01-01T00:00:00')
       expect(getAllPayeeInformation(members, previousPaymentDate).payees.map(p => p.id)).toEqual([members[0].id])
-      // TODO: Fix test to ensure paymentDate works expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate.getTime()).toEqual(new Date('2024-02-01').getTime())
+      expect(getAllPayeeInformation(members, previousPaymentDate).paymentDate).toEqual(new Date('2024-02-01T00:00:00'))
     })
 
   it('errors if no member fulfills criteria', () => {
-    const members: Member[] = [
+    const members: SimplifiedMember[] = [
       {
         id: -1,
-        paymentRoleAmount: 0,
+        paymentRole: { amount: 0, id: 1, name: '' },
+        firstName: '',
+        lastName: '',
         paymentSchedule: 'monthly',
-        joinDate: new Date('2000-01-01'),
-        leaveDate: new Date('2000-02-01')
+        joinDate: new Date('2000-01-01T00:00:00'),
+        leaveDate: new Date('2000-02-01T00:00:00')
       }
     ]
-    const previousPaymentDate = new Date('2024-01-01')
+    const previousPaymentDate = new Date('2024-01-01T00:00:00')
     expect(() => getAllPayeeInformation(members, previousPaymentDate).payees.map(p => p.id)).to.throw()
   })
 }

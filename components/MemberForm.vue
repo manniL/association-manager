@@ -57,6 +57,10 @@ const formattedLeaveDate = computed(() => {
   return formatDate(state.leaveDate)
 })
 
+const formattedMandateDate = computed(() => {
+  return 'mandateDate' in state.payment.data && formatDate(state.payment.data.mandateDate)
+})
+
 watch(() => props.initialState, (initialState) => {
   if (initialState) {
     // TODO: Maybe deep merge it later?
@@ -179,12 +183,24 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
         <UFormGroup label="Account Holder" name="accountHolder">
           <UInput v-model="state.payment.data.accountHolder" />
         </UFormGroup>
-        <UFormGroup required label="IBAN" name="IBAN">
+        <UFormGroup required label="IBAN" name="iban">
           <UInput v-model="state.payment.data.iban" />
         </UFormGroup>
-        <UFormGroup label="BIC" name="BIC" required>
+        <UFormGroup label="BIC" name="bic" required>
           <UInput v-model="state.payment.data.bic" />
         </UFormGroup>
+        <UFormGroup label="Mandate ID" name="mandate-id" required>
+          <UInput v-model="state.payment.data.mandateId" />
+        </UFormGroup>
+        <UFormGroup label="Date of Mandate Signature" name="mandateDate" required :ui="{ container: '' }">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedMandateDate" type="date-local" size="md"
+            class="w-full" />
+          <template #panel>
+            <AppDatePicker mode="date" v-model="state.payment.data.mandateDate" />
+          </template>
+        </UPopover>
+      </UFormGroup>
       </div>
 
 

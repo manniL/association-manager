@@ -1,9 +1,10 @@
 <script setup lang="ts">
+// TODO: Fetch payments here later on
 const links = [[{
-  label: 'Payment #1 (01.01.2024)',
+  label: 'Payment #1',
   to: '/finances/payments/1',
 }, {
-  label: 'Latest Payment (01.04.2024)',
+  label: 'Preview next payment',
   to: '/finances/payments/',
 }]]
 

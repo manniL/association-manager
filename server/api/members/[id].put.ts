@@ -21,6 +21,9 @@ export default defineEventHandler(async (event) => {
   const sepaAccountHolder = 'accountHolder' in paymentData ? paymentData.accountHolder : undefined
   const sepaIban = 'iban' in paymentData ? paymentData.iban : undefined
   const sepaBic = 'bic' in paymentData ? paymentData.bic : undefined
+  const sepaMandateId = 'mandateId' in paymentData ? paymentData.mandateId : undefined
+  const sepaMandateDate = 'mandateDate' in paymentData ? paymentData.mandateDate : undefined
+  console.log({paymentData})
 
 
   const updatedEntry = await useDrizzle()
@@ -48,6 +51,8 @@ export default defineEventHandler(async (event) => {
       sepaAccountHolder,
       sepaIban,
       sepaBic,
+      sepaMandateDate,
+      sepaMandateId,
       createdAt: new Date(),
       updatedAt: new Date()
     })
