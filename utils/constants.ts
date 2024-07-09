@@ -1,49 +1,15 @@
-export const genderOptions = [
-  {
-    label: 'Prefer not to say',
-    value: 'no-answer'
-  },
-  {
-    label: 'Male',
-    value: 'male'
-  },
-  {
-    label: 'Female',
-    value: 'female'
-  },
-  {
-    label: 'Other',
-    value: 'other'
-  }
-] as const
+import type { LOCALE } from "~/lang/en-US.js"
+type GenderOptions = keyof LOCALE['basic']['genderOptions']
+export const genderValues = ['male', 'female', 'other', 'no-answer'] as const satisfies GenderOptions[]
 
-export const genderValues = ['male', 'female', 'other', 'no-answer'] as const satisfies Exclude<typeof genderOptions[number]['value'], undefined>[] 
-
-export const paymentScheduleOptions = [
-  {
-    id: 'monthly',
-    name: 'Monthly',
-    monthInterval: 1,
-  },
-  {
-    id: 'quarterly',
-    name: 'Quarterly',
-    monthInterval: 3,
-  },
-  {
-    id: 'half-yearly',
-    name: 'Bi-Annually',
-    monthInterval: 6,
-  },
-  {
-    id: 'yearly',
-    name: 'Annually',
-    monthInterval: 12,
-  },
-] as const
-
-export type PaymentScheduleIds = typeof paymentScheduleOptions[number]['id']
+export type PaymentScheduleIds = keyof LOCALE['payment']['schedule']['options']
+export const paymentScheduleOptions: Record<PaymentScheduleIds, number> = {
+  'monthly': 1,
+  'quarterly': 3,
+  'half-yearly': 6,
+  'yearly': 12,
+} as const
 
 export const paymentScheduleIds = [
   'monthly', 'quarterly', 'half-yearly', 'yearly'
-] as const
+] as const satisfies PaymentScheduleIds[] // TODO: Tighter type checking

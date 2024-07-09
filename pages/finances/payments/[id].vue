@@ -4,24 +4,26 @@ const isExistingPayment = computed(() => !!route.params.id)
 const { data, refresh: refreshPaymentInfo } = await useFetch(`/api/finances/payments/${route.params.id}`)
 
 const payees = computed(() => data.value?.payees ?? [])
-const date = computed(() => new Date()) // TODO: Fix collection date
+const date = computed(() => data.value?.collectionDate ? new Date(data.value.collectionDate) : new Date())
 const formattedDate = computed(() => date.value.toISOString().split('T')[0])
 const sepaLink = computed(() => `/finances/payments/${route.params.id}/${formattedDate.value}.xml`)
+
+const { t } = useI18n()
 
 const defaultColumns = computed(() => [
   {
     key: 'firstName',
-    label: 'First Name',
+    label: t('basic.firstName'),
     sortable: true
   },
   {
     key: 'lastName',
-    label: 'Last Name',
+    label: t('basic.lastName'),
     sortable: true
   },
   {
     key: 'paymentAmount',
-    label: 'Amount to pay (for this payment)',
+    label: t('payment.role.amountForThisPayment'),
     sortable: true
   },
   {
@@ -31,22 +33,22 @@ const defaultColumns = computed(() => [
   },
   {
     key: 'paymentRoleName',
-    label: 'Payment Role',
+    label: t('payment.role.role'),
     sortable: true
   },
   {
     key: 'paymentType',
-    label: 'Payment Type',
+    label: t('payment.type.type'),
     sortable: true
   }].concat(isExistingPayment.value ? [
     {
       key: 'hasPaid',
-      label: 'Has Paid?',
+      label: t('payment.misc.hasPaid'),
       sortable: true
     },
     {
       key: '_actions',
-      label: 'Actions'
+      label: t('payment.misc.actions')
     }
   ] : [] as any)
 )
@@ -74,14 +76,14 @@ const changeSepaPayeeState = async () => {
 }
 
 useHead({
-  title: () => route.params.id ? `Payment #${route.params.id}` : 'Payment Preview'
+  title: () => route.params.id ? `${t('payment.payment')} #${route.params.id}` : `${t('payment.payment')} ${t('basic.preview')}`
 })
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="`Payment ${data?.id} - Collection at ${data?.collectionDate}` " :badge="`${payees.length} members`" />
+      <UDashboardNavbar :title="`${t('payment.payment')} ${data?.id} - ${t('payment.misc.collectionAt')} ${data?.collectionDate}` " :badge="`${payees.length} ${t('membership.member', payees.length)}`" />
 
       <!-- TODO: Bring back loading -->
       <UTable v-model:sort="sort" :rows="payees" :columns="columns" sort-mode="manual" class="w-full"
@@ -89,17 +91,20 @@ useHead({
         <template #paymentAmount-data="{ row }">
           {{ `${Number(row.paymentAmount / 100).toFixed(2)} €` }}
         </template>
+        <template #hasPaid-data="{ row }">
+          {{ row.hasPaid ? $t('basic.yes') : $t('basic.no') }}
+        </template>
         <template #_actions-data="{ row }">
-          <UButton @click="onTogglePaymentState(row.id)" :color="row.hasPaid ? 'white' : undefined" :variant="row.hasPaid ? 'outline' : 'soft'"
+          <UButton @click="onTogglePaymentState(row.memberId)" :color="row.hasPaid ? 'white' : undefined" :variant="row.hasPaid ? 'outline' : 'soft'"
             :trailing-icon="row.hasPaid ? 'i-heroicons-face-frown-20-solid' : 'i-heroicons-check-20-solid'">{{
-              row.hasPaid ? 'Mark as unpaid' : 'Mark as paid' }}</UButton>
+              row.hasPaid ? $t('payment.state.mark.unpaid') : $t('payment.state.mark.paid') }}</UButton>
           <!-- if user has sepa available
           <UButton>Generate Single SEPA File</UButton>
           -->
         </template>
       </UTable>
       <div class="mx-2 mt-8">
-        <UButton class="mr-8" v-if="sepaLink" :to="sepaLink" download>Download SEPA File</UButton>
+        <UButton class="mr-8" v-if="sepaLink" external :to="sepaLink" target="_blank" download>Download SEPA File</UButton>
         <UButton variant="soft" v-if="sepaLink" :loading="isTogglingSepaPayeesLoading" @click="changeSepaPayeeState">Set SEPA Payees to Paid</UButton>
       </div>
     </UDashboardPanel>

@@ -63,23 +63,23 @@ const options: MaskInputOptions = {
   <UForm :schema="schema" :state="state" @submit="onSubmit">
 
     <div class="space-y-4">
-      <UFormGroup required label="Name" name="name">
+      <UFormGroup required :label="$t('basic.name')" name="name">
         <UInput v-model="state.name" />
       </UFormGroup>
-      <UFormGroup required label="Amount to pay" hint="(per month)" name="amount">
+      <UFormGroup required :label="$t('payment.role.amount')" :hint="$t('payment.role.perMonth')" name="amount">
         <UInput placeholder="9.50" leading-icon="i-heroicons-currency-euro" type="text" inputmode="numeric" v-maska:[options] :data-maska="mask"
           data-maska-tokens="0:\d:multiple|9:\d:optional" v-model="state.amount" />
       </UFormGroup>
     </div>
 
-    <UDivider label="Notes" class="my-8" />
+    <UDivider :label="$t('basic.notes')" class="my-8" />
 
-    <UFormGroup label="Notes" name="notes" hint="(optional)">
+    <UFormGroup :label="$t('basic.notes')" name="notes" :hint="`(${$t('basic.optional')})`">
       <UTextarea v-model="state.notes" />
     </UFormGroup>
 
     <UButton class="mt-8" type="submit">
-      Submit
+      {{ $t('basic.submit') }}
     </UButton>
   </UForm>
 </template>

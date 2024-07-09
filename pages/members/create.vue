@@ -8,15 +8,19 @@ async function onSubmit (validateData: Schema) {
   navigateTo('/members/')
 }
 
+const { t } = useI18n()
+
+const title = t('membership.create')
+
 useHead({
-  title: 'Add new member'
+  title,
 })
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Add a new member" />
+      <UDashboardNavbar :title="title" />
       <UDashboardPanelContent>
         <MemberForm class="mt-8" @submit="onSubmit" />
       </UDashboardPanelContent>

@@ -8,15 +8,19 @@ async function onSubmit(validateData: SchemaOutput) {
   navigateTo('/finances/roles')
 }
 
+const { t } = useI18n()
+
+const title = `${t('payment.role.create')}`
+
 useHead({
-  title: 'Add new payment role'
+  title
 })
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Add a new payment role" />
+      <UDashboardNavbar :title="title" />
       <UDashboardPanelContent>
         <PaymentRoleForm class="mt-8" @submit="onSubmit" />
       </UDashboardPanelContent>

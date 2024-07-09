@@ -13,7 +13,7 @@ async function onSubmit(validateData: SchemaOutput) {
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Create next payment" />
+      <UDashboardNavbar :title="$t('payment.create')" />
       <UDashboardPanelContent>
         <PaymentForm class="mt-8" @submit="onSubmit" />
       </UDashboardPanelContent>

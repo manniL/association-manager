@@ -27,11 +27,11 @@ export default defineEventHandler(async (event) => {
   // Calculate payment amount (non-monthly)
 
   const payeesWithPaymentAmount: SimplifiedMemberWithPayment[] = payees.map(payee => {
-    const paymentSchedule = paymentScheduleOptions.find(schedule => schedule.id === payee.paymentSchedule)
+    const paymentSchedule = paymentScheduleOptions[payee.paymentSchedule]
     if (!paymentSchedule) {
       throw new Error(`Payment schedule ${payee.paymentSchedule} not found`)
     }
-    const paymentAmount = payee.paymentRole.amount * paymentSchedule.monthInterval
+    const paymentAmount = payee.paymentRole.amount * paymentSchedule
     return {
       ...payee,
       paymentAmount

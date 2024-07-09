@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { TransformedMemberWithId as Member } from '~/types'
 
+const { t } = useI18n()
+
 const defaultColumns = [
   {
     key: 'membershipId',
@@ -9,32 +11,32 @@ const defaultColumns = [
   },
   {
     key: 'firstName',
-    label: 'First Name',
+    label: t('basic.firstName'),
     sortable: true
   },
   {
     key: 'lastName',
-    label: 'Last Name',
+    label: t('basic.lastName'),
     sortable: true
   },
   {
     key: 'birthDate',
-    label: 'Birth Date',
+    label: t('basic.birthDate'),
     sortable: true
   },
   {
     key: 'paymentRole',
-    label: 'Payment Role',
+    label: t('payment.role.role'),
     sortable: true
   },
   {
     key: 'joinDate',
-    label: 'Join Date',
+    label: t('membership.joinDate'),
     sortable: true
   },
   {
     key: 'leaveDate',
-    label: 'Leave Date',
+    label: t('membership.leaveDate'),
     sortable: true
   },
 ]
@@ -77,7 +79,7 @@ useHead({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Members" :badge="members.length">
+      <UDashboardNavbar :title="$t('membership.member', 2)" :badge="members.length">
         <template #right>
           <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off" placeholder="Filter members..."
             class="hidden lg:block" @keydown.esc="$event.target.blur()">
@@ -86,7 +88,7 @@ useHead({
             </template>
           </UInput>
 
-          <UButton to="/members/create" label="New member" trailing-icon="i-heroicons-plus" color="gray" />
+          <UButton to="/members/create" :label="$t('membership.create')" trailing-icon="i-heroicons-plus" color="gray" />
         </template>
       </UDashboardNavbar>
 
@@ -104,7 +106,7 @@ useHead({
           <USelectMenu v-model="selectedColumns" icon="i-heroicons-adjustments-horizontal-solid"
             :options="defaultColumns" multiple class="hidden lg:block">
             <template #label>
-              Display
+              {{ $t('basic.display') }}
             </template>
           </USelectMenu>
         </template>

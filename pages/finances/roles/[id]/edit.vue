@@ -12,8 +12,9 @@ const { data } = await useFetch(`/api/finances/roles/${id}`, {
   }
 })
 
+const { t} = useI18n()
 
-const editTitle = `${data.value?.name} Payment Role`
+const editTitle = `${data.value?.name} ${t('payment.role.role')}`
 
 useHead({
   title: editTitle

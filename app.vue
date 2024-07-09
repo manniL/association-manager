@@ -3,45 +3,47 @@ import type { Group } from '#ui/types'
 const colorMode = useColorMode()
 const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
+const { t } = useI18n()
+
 const links = [{
   id: 'home',
-  label: 'Home',
+  label: t('basic.home'),
   icon: 'i-heroicons-home',
   to: '/',
   tooltip: {
-    text: 'Home',
+    text: t('basic.home'),
     shortcuts: ['G', 'H']
   }
 }, {
   id: 'members',
-  label: 'Members',
+  label: t('membership.member', 2),
   icon: 'i-heroicons-user-group',
   to: '/members',
   tooltip: {
-    text: 'Members',
+    text: t('membership.member', 2),
     shortcuts: ['G', 'M']
   }
 }, {
   id: 'finances',
-  label: 'Finances',
+  label: t('basic.finances'),
   to: '/finances',
   icon: 'i-heroicons-banknotes',
   children: [
     {
       id: 'payments',
-      label: 'Payments',
+      label: t('payment.payment', 2),
       to: '/finances/payments/',
       tooltip: {
-        text: 'Finances - Payments',
+        text: `${t('basic.finances')} - ${t('payment.payment', 2)}`,
         shortcuts: ['G', 'F', 'P']
       }
     },
     {
       id: 'payment-roles',
-      label: 'Payment roles',
+      label: t('payment.role.role', 2),
       to: '/finances/roles/',
       tooltip: {
-        text: 'Finances - Payment roles',
+        text: `${t('basic.finances')} - ${t('payment.role.role', 2)}`,
         shortcuts: ['G', 'F', 'R']
       }
     }
@@ -58,10 +60,7 @@ useHead({
   meta: [
     { key: 'theme-color', name: 'theme-color', content: color }
   ],
-  titleTemplate: c => c ? `${c} - Association Manager` : 'Association Manager',
-  htmlAttrs: {
-    lang: 'en' // TODO: i18n
-  }
+  titleTemplate: c => c ? `${c} - ${t('app.title')}` : t('app.title'),
 })
 </script>
 
@@ -72,7 +71,7 @@ useHead({
       <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
         <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
           <template #left>
-            <p class="text-xl font-bold">Association Manager</p>
+            <p class="text-xl font-bold">{{ t('app.title') }}</p>
           </template>
         </UDashboardNavbar>
 

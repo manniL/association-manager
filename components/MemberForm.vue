@@ -11,7 +11,10 @@ const props = defineProps<{
 }>()
 
 // stripe / ... / TODO in the future if someone needs other payment providers
-const paymentTypes = ['SEPA', 'CASH'] as const
+const paymentTypes = computed(() => [
+  { value: 'CASH', label: t('payment.type.cash') },
+  { value: 'SEPA', label: t('payment.type.sepa') },
+])
 
 const { data: rawPaymentRoles } = await useFetch('/api/finances/roles')
 const paymentRoles = computed(() => rawPaymentRoles.value?.map((role) => ({ value: role.id, label: role.name})))
@@ -41,7 +44,7 @@ const state = reactive<Schema>({
     type: 'CASH',
     data: {}
   },
-  paymentRole: 'Full',
+  paymentRole: '',
   paymentSchedule: 'yearly',
 })
 
@@ -75,29 +78,41 @@ const emit = defineEmits<{
 function onSubmit (event: FormSubmitEvent<Schema>) {
   emit('submit', event.data)
 }
+
+const { t } = useI18n()
+
+const genderOptions = computed(() => genderValues.map(value => ({
+  value,
+  label: t(`basic.genderOptions.${value}`)
+})))
+
+const paymentScheduleOptions = computed(() => paymentScheduleIds.map(value => ({
+  value,
+  label: t(`payment.schedule.options.${value}`)
+})))
 </script>
 
 <template>
   <UForm :schema="schema" :state="state" @submit="onSubmit">
 
     <div class="space-y-4">
-      <UFormGroup required label="First name" name="firstName">
+      <UFormGroup required :label="$t('basic.firstName')" name="firstName">
         <UInput v-model="state.firstName" />
       </UFormGroup>
 
-      <UFormGroup required label="Last name" name="lastName">
+      <UFormGroup required :label="$t('basic.lastName')" name="lastName">
         <UInput v-model="state.lastName" />
       </UFormGroup>
 
-      <UFormGroup required label="Gender" name="gender">
+      <UFormGroup required :label="$t('basic.gender')" name="gender">
         <USelect v-model="state.gender" :options="genderOptions" />
       </UFormGroup>
 
-      <UFormGroup label="Company" name="company" hint="(optional)">
+      <UFormGroup :label="$t('basic.company')" name="company" :hint="`(${$t('basic.optional')})`">
         <UInput v-model="state.company" />
       </UFormGroup>
 
-      <UFormGroup label="Date of Birth" name="birthDate" hint="(optional)" :ui="{ container: '' }">
+      <UFormGroup :label="$t('basic.birthDate')" name="birthDate" :hint="`(${$t('basic.optional')})`" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedBirthDate" type="date-local" size="md"
             class="w-full" />
@@ -107,47 +122,45 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
         </UPopover>
       </UFormGroup>
 
-      <UFormGroup label="Phone" name="phone" hint="(optional)">
+      <UFormGroup :label="$t('basic.phone')" name="phone" :hint="`(${$t('basic.optional')})`">
         <UInput v-model="state.phone" />
       </UFormGroup>
 
-      <UFormGroup label="Email" name="email" hint="(optional)">
+      <UFormGroup :label="$t('basic.email')" name="email" :hint="`(${$t('basic.optional')})`">
         <UInput v-model="state.email" />
       </UFormGroup>
     </div>
 
-    <UDivider class="my-8" label="Address" />
+    <UDivider class="my-8" :label="$t('address.address')" />
 
     <!-- Mark this as "address sub group" -->
     <div class="space-y-4">
-      <UFormGroup required label="Street and House Number" name="street">
+      <UFormGroup required :label="$t('address.streetAndHouseNumber')" name="street">
         <UInput v-model="state.address.street" />
       </UFormGroup>
-      <UFormGroup required label="City" name="city">
+      <UFormGroup required :label="$t('address.city')" name="city">
         <UInput v-model="state.address.city" />
       </UFormGroup>
-      <UFormGroup required label="Zip" name="zip">
+      <UFormGroup required :label="$t('address.zip')" name="zip">
         <UInput v-model="state.address.zip" />
       </UFormGroup>
-      <UFormGroup label="State" name="state" hint="(optional)">
+      <UFormGroup :label="$t('address.state')" name="state" :hint="`(${$t('basic.optional')})`">
         <UInput v-model="state.address.state" />
       </UFormGroup>
-      <UFormGroup required label="Country" name="country">
+      <UFormGroup required :label="$t('address.country')" name="country">
         <!-- TODO: Set default value, maybe optional -->
         <UInput v-model="state.address.country" />
       </UFormGroup>
     </div>
 
-    <UDivider class="my-8" label="Membership" />
+    <UDivider class="my-8" :label="$t('membership.membership')" />
 
     <div class="space-y-4">
-      <UFormGroup required label="Membership ID" name="membershipId">
+      <UFormGroup required :label="$t('membership.id')" name="membershipId">
         <UInput v-model="state.membershipId" />
       </UFormGroup>
 
-      <!-- TODO: Add date picker *please* -->
-
-      <UFormGroup label="Join Date" name="joinDate" hint="(optional)" :ui="{ container: '' }">
+      <UFormGroup :label="$t('membership.joinDate')" name="joinDate" :hint="`(${$t('basic.optional')})`" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedJoinDate" type="date-local" size="md"
             class="w-full" />
@@ -157,7 +170,7 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
         </UPopover>
       </UFormGroup>
 
-      <UFormGroup label="Leave Date" name="leaveDate" hint="(optional)" :ui="{ container: '' }">
+      <UFormGroup :label="$t('membership.leaveDate')" name="leaveDate" :hint="`(${$t('basic.optional')})`" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedLeaveDate" type="date-local" size="md"
             class="w-full" />
@@ -168,31 +181,31 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
       </UFormGroup>
     </div>
 
-    <UDivider class="my-8" label="Payment" />
+    <UDivider class="my-8" :label="$t('payment.payment')" />
 
     <div class="space-y-4">
-      <UFormGroup required label="Payment Role" name="paymentRole">
+      <UFormGroup required :label="$t('payment.role.role')" name="paymentRole">
         <USelect v-model="state.paymentRole" :options="paymentRoles" />
       </UFormGroup>
 
-      <UFormGroup required label="Payment Type" name="paymentType">
+      <UFormGroup required :label="$t('payment.type.type')" name="paymentType">
         <USelect v-model="state.payment.type" :options="paymentTypes" />
       </UFormGroup>
 
       <div v-if="state.payment.type === 'SEPA'">
-        <UFormGroup label="Account Holder" name="accountHolder">
+        <UFormGroup :label="$t('payment.type.accountHolder')" name="accountHolder">
           <UInput v-model="state.payment.data.accountHolder" />
         </UFormGroup>
-        <UFormGroup required label="IBAN" name="iban">
+        <UFormGroup required :label="$t('payment.type.iban')" name="iban">
           <UInput v-model="state.payment.data.iban" />
         </UFormGroup>
-        <UFormGroup label="BIC" name="bic" required>
+        <UFormGroup :label="$t('payment.type.bic')" name="bic" required>
           <UInput v-model="state.payment.data.bic" />
         </UFormGroup>
-        <UFormGroup label="Mandate ID" name="mandate-id" required>
+        <UFormGroup :label="$t('payment.type.mandateId')" name="mandate-id" required>
           <UInput v-model="state.payment.data.mandateId" />
         </UFormGroup>
-        <UFormGroup label="Date of Mandate Signature" name="mandateDate" required :ui="{ container: '' }">
+        <UFormGroup :label="$t('payment.type.mandateDate')" name="mandateDate" required :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedMandateDate" type="date-local" size="md"
             class="w-full" />
@@ -204,20 +217,19 @@ function onSubmit (event: FormSubmitEvent<Schema>) {
       </div>
 
 
-      <UFormGroup required label="Payment Schedule" name="paymentSchedule">
-        <!-- TODO: Use names here later on -->
-        <USelect v-model="state.paymentSchedule" :options="paymentScheduleIds" />
+      <UFormGroup required :label="$t('payment.schedule.schedule')" name="paymentSchedule">
+        <USelect v-model="state.paymentSchedule" :options="paymentScheduleOptions" />
       </UFormGroup>
     </div>
 
-    <UDivider label="Notes" class="my-8" />
+    <UDivider :label="$t('basic.notes')" class="my-8" />
 
-    <UFormGroup label="Notes" name="notes" hint="(optional)">
+    <UFormGroup :label="$t('basic.notes')" name="notes" :hint="`(${$t('basic.optional')})`">
       <UTextarea v-model="state.notes" />
     </UFormGroup>
 
     <UButton class="mt-8" type="submit">
-      Submit
+      {{ $t('basic.submit') }}
     </UButton>
   </UForm>
 </template>

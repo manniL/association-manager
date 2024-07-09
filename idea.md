@@ -1,4 +1,5 @@
 * Fix Auth
+* Fix calculate months correctly!
 
 * Migration from CSV to feed to DB
 * i18n (manual work)

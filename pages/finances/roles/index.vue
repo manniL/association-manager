@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import type { TransformedMemberWithId as Member } from '~/types'
 
+const { t } = useI18n()
+
 const defaultColumns = [
   {
     key: 'name',
-    label: 'Name',
+    label: t('basic.name'),
     sortable: true
   },
   {
     key: 'amount',
-    label: 'Amount to pay (per month)',
+    label: `${t('payment.role.amount')} ${t('payment.role.perMonth')}`,
     sortable: true
   }
 ]
@@ -25,17 +27,19 @@ function onSelect(row: Member) {
   return navigateTo(`/finances/roles/${row.id}/edit`)
 }
 
+const title = `${t('payment.role.role', 2)}`
+
 useHead({
-  title: 'Payment Roles'
+  title
 })
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Payment Roles" :badge="paymentRoles.length">
+      <UDashboardNavbar :title="title" :badge="paymentRoles.length">
         <template #right>
-          <UButton to="/finances/roles/create" label="New payment role" trailing-icon="i-heroicons-plus" color="gray" />
+          <UButton to="/finances/roles/create" :label="$t('payment.role.create')" trailing-icon="i-heroicons-plus" color="gray" />
         </template>
       </UDashboardNavbar>
 
@@ -43,7 +47,7 @@ useHead({
       <UTable v-model:sort="sort" :rows="paymentRoles" :columns="columns" @select="onSelect"
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">
         <template #amount-data="{ row }">
-          {{ row.amount === 0 ? 'Gratis' : `${Number(row.amount / 100).toFixed(2)} €` }} 
+          {{ row.amount === 0 ? '-' : `${Number(row.amount / 100).toFixed(2)} €` }} 
         </template>
       </UTable>
     </UDashboardPanel>

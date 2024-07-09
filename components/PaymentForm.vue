@@ -48,7 +48,7 @@ const formattedCollectionDate = computed(() => {
     <div class="mb-8" v-if="isFirstPayment">
       <h2 class="text-xl">This is your first payment! which start date do you want to choose?</h2>
 
-      <UFormGroup class="mt-4" label="Start Date for the first payment" name="startDate" :ui="{ container: '' }">
+      <UFormGroup class="mt-4" :label="$t('payment.firstStartDate')" name="startDate" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedStartDate" type="date-local" size="md"
             class="w-full" />
@@ -59,7 +59,7 @@ const formattedCollectionDate = computed(() => {
       </UFormGroup>
     </div>
 
-    <UFormGroup label="Collection Date of Next Payment" name="collectionDate" :ui="{ container: '' }">
+    <UFormGroup :label="$t('payment.collectionDate')" name="collectionDate" :ui="{ container: '' }">
         <UPopover :popper="{ placement: 'bottom-start' }">
           <UInput icon="i-heroicons-calendar-days-20-solid" :value="formattedCollectionDate" type="date-local" size="md"
             class="w-full" />
@@ -70,7 +70,7 @@ const formattedCollectionDate = computed(() => {
       </UFormGroup>
 
     <UButton class="mt-8" type="submit">
-      Submit
+      {{ $t('basic.submit') }}
     </UButton>
   </UForm>
 </template>
