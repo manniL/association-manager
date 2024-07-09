@@ -23,8 +23,6 @@ export default defineEventHandler(async (event) => {
   const sepaBic = 'bic' in paymentData ? paymentData.bic : undefined
   const sepaMandateId = 'mandateId' in paymentData ? paymentData.mandateId : undefined
   const sepaMandateDate = 'mandateDate' in paymentData ? paymentData.mandateDate : undefined
-  console.log({paymentData})
-
 
   const updatedEntry = await useDrizzle()
     .update(members)

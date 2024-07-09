@@ -1,13 +1,12 @@
 // @ts-expect-error No types :(
 import sepa from 'sepa'
 
-type Member = {
+export type SepaMemberEntry = {
   firstName: string,
   lastName: string,
   accountHolder?: string,
   iban: string,
   bic: string,
-  id: string,
   mandate: {
     id: string,
     signatureDate: string, //YYYY-MM-DD or Date
@@ -23,15 +22,13 @@ type Creditor = {
 }
 
 type CreateXmlForSepaPaymentArgs = {
-  members: Member[],
+  members: SepaMemberEntry[],
   collectionDate: Date,
   creditor: Creditor,
   notes: string,
 }
 
 export function createXmlForSepaPayment({ members, collectionDate, creditor, notes }: CreateXmlForSepaPaymentArgs): string {
-  // Members: Name, IBAN, BIC, PaymentRole, Amount, "Discount/Subtraction"
-
   const doc = new sepa.Document();
   doc.grpHdr.id = generateId();
   doc.grpHdr.created = new Date();

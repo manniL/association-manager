@@ -4,6 +4,9 @@ const isExistingPayment = computed(() => !!route.params.id)
 const { data, refresh: refreshPaymentInfo } = await useFetch(`/api/finances/payments/${route.params.id}`)
 
 const payees = computed(() => data.value?.payees ?? [])
+const date = computed(() => new Date()) // TODO: Fix collection date
+const formattedDate = computed(() => date.value.toISOString().split('T')[0])
+const sepaLink = computed(() => `/finances/payments/${route.params.id}/${formattedDate.value}.xml`)
 
 const defaultColumns = computed(() => [
   {
@@ -60,6 +63,16 @@ const onTogglePaymentState = async (memberId: number) => {
   refreshPaymentInfo()
 }
 
+const isTogglingSepaPayeesLoading = ref(false)
+const changeSepaPayeeState = async () => {
+  isTogglingSepaPayeesLoading.value = true
+  await $fetch(`/api/finances/payments/${route.params.id}/sepa-state`, {
+    method: 'PUT'
+  }),
+  await refreshPaymentInfo()
+  isTogglingSepaPayeesLoading.value = false
+}
+
 useHead({
   title: () => route.params.id ? `Payment #${route.params.id}` : 'Payment Preview'
 })
@@ -85,6 +98,10 @@ useHead({
           -->
         </template>
       </UTable>
+      <div>
+        <UButton v-if="sepaLink" :to="sepaLink" download>Download SEPA File</UButton>
+        <UButton variant="soft" v-if="sepaLink" :loading="isTogglingSepaPayeesLoading" @click="changeSepaPayeeState">Set SEPA Payees to Paid</UButton>
+      </div>
     </UDashboardPanel>
   </UDashboardPage>
 </template>
