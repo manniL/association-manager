@@ -98,8 +98,8 @@ useHead({
           -->
         </template>
       </UTable>
-      <div>
-        <UButton v-if="sepaLink" :to="sepaLink" download>Download SEPA File</UButton>
+      <div class="mx-2 mt-8">
+        <UButton class="mr-8" v-if="sepaLink" :to="sepaLink" download>Download SEPA File</UButton>
         <UButton variant="soft" v-if="sepaLink" :loading="isTogglingSepaPayeesLoading" @click="changeSepaPayeeState">Set SEPA Payees to Paid</UButton>
       </div>
     </UDashboardPanel>
