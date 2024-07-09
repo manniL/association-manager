@@ -5,6 +5,13 @@ export default defineNuxtConfig({
   hub: {
     database: true,
   },
+  runtimeConfig: {
+    auth: {
+      sessionSecret: 'secret',
+      username: 'test',
+      password: 'test'
+    }
+  },
   nitro: {
     replace: {
       'globalThis._importMeta_.vitest': 'undefined',

@@ -3,16 +3,14 @@ import { paymentScheduleOptions, type PaymentScheduleIds } from '~/utils/constan
 import type { SimplifiedMember } from '~/server/utils/payment.js'
 import { paymentPayees, payments } from '~/server/database/schema.js'
 import { paymentFormSchema } from '~/utils/schemas.js'
+import { desc } from 'drizzle-orm'
 
 type Member = InternalApi['/api/members']['get'][number]
 type PaymentRole = InternalApi['/api/finances/roles']['get'][number]
 
 export default defineEventHandler(async (event) => {
-  const { startDate: startDate, collectionDate } = await readValidatedBody(event, paymentFormSchema.parse)
-  if (!startDate) {
-    // TODO: Check payments for start date
-    throw new Error('No previous payment date provided')
-  }
+  const { startDate: possibleStartDate, collectionDate } = await readValidatedBody(event, paymentFormSchema.parse)
+  const startDate = possibleStartDate ?? await getStartDateFromLastPayment()
 
   // Fetch all members
   const [members, paymentRoles] = await Promise.all([
@@ -39,8 +37,6 @@ export default defineEventHandler(async (event) => {
       paymentAmount
     }
   })
-
-  // TODO: Persist the payment in the database
 
   return persistPayment(payeesWithPaymentAmount, paymentDate, collectionDate)
 
@@ -94,13 +90,15 @@ async function persistPayment(payees: SimplifiedMemberWithPayment[], paymentDate
 }
 
 async function createPayment(paymentDate: Date, collectionDate: Date) {
+  console.log({collectionDate})
+  const now = new Date()
   return await useDrizzle()
     .insert(payments)
     .values({
       paymentDate,
       collectionDate,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: now,
+      updatedAt: now
     }).returning().get()
 }
 
@@ -122,4 +120,16 @@ async function insertPayment(paymentId: number, payee: SimplifiedMemberWithPayme
       createdAt: new Date(),
       updatedAt: new Date()
     }).returning().get()
+}
+
+async function getStartDateFromLastPayment(): Promise<Date> {
+  const lastPayment = await useDrizzle()
+    .select({ paymentDate: payments.paymentDate })
+    .from(payments)
+    .orderBy(desc(payments.paymentDate)).limit(1)
+    .get()
+  if (!lastPayment) {
+    throw new Error('No previous payment date provided')
+  }
+  return lastPayment.paymentDate
 }

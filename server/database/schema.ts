@@ -25,7 +25,7 @@ export const members = sqliteTable('members_2', {
   lastName: text('last_name').notNull(),
   company: text('company'),
   gender: text('gender', { enum: genderValues }).notNull(),
-  birthDate: integer('birth_date', { mode: 'timestamp' }),
+  birthDate: integer('birth_date', { mode: 'timestamp_ms' }),
   phone: text('phone'),
   email: text('email').unique(),
 
@@ -38,8 +38,8 @@ export const members = sqliteTable('members_2', {
 
   // Membership
   membershipId: text('membership_id').unique().notNull(),
-  joinDate: integer('join_date', { mode: 'timestamp' }),
-  leaveDate: integer('leave_date', { mode: 'timestamp' }),
+  joinDate: integer('join_date', { mode: 'timestamp_ms' }),
+  leaveDate: integer('leave_date', { mode: 'timestamp_ms' }),
   notes: text('notes'),
 
   // Payment
@@ -47,7 +47,7 @@ export const members = sqliteTable('members_2', {
   sepaIban: text('sepa_iban'),
   sepaBic: text('sepa_bic'),
   sepaMandateId: text('sepa_mandate_id'),
-  sepaMandateDate: integer('sepa_mandate_date', { mode: 'timestamp' }),
+  sepaMandateDate: integer('sepa_mandate_date', { mode: 'timestamp_ms' }),
   paymentRole: integer('payment_role').notNull().references(() => paymentRoles.id),
   paymentSchedule: text('payment_schedule', { enum: paymentScheduleIds }).notNull(),
   paymentType: text('payment_type', { enum: ['cash', 'sepa'] }).notNull(),
@@ -65,8 +65,8 @@ export const selectMemberSchema = createSelectSchema(members);
 
 export const payments = sqliteTable('payments', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  paymentDate: integer('collection_date', { mode: 'timestamp' }).notNull(),
-  collectionDate: integer('collection_date', { mode: 'timestamp' }).notNull(),
+  paymentDate: integer('collection_date', { mode: 'timestamp_ms' }).notNull(),
+  collectionDate: integer('collection_date', { mode: 'timestamp_ms' }).notNull(),
 
   // Meta
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
@@ -79,8 +79,8 @@ export const paymentPayees = sqliteTable('payment_payees', {
   memberId: integer('member_id').notNull(), //.references(() => members.id),
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
-  joinDate: integer('join_date', { mode: 'timestamp' }),
-  leaveDate: integer('leave_date', { mode: 'timestamp' }),
+  joinDate: integer('join_date', { mode: 'timestamp_ms' }),
+  leaveDate: integer('leave_date', { mode: 'timestamp_ms' }),
   paymentSchedule: text('payment_schedule', { enum: paymentScheduleIds }).notNull(),
   paymentAmount: integer('payment_amount').notNull(),
   paymentRoleId: integer('payment_role').notNull(), // NOT .references(() => paymentRoles.id) because role could be deleted already

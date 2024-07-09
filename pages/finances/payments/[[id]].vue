@@ -81,7 +81,7 @@ useHead({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Next Payment" :badge="`${payees.length} members`" />
+      <UDashboardNavbar :title="`Payment ${data?.id} - Collection at ${data?.collectionDate}` " :badge="`${payees.length} members`" />
 
       <!-- TODO: Bring back loading -->
       <UTable v-model:sort="sort" :rows="payees" :columns="columns" sort-mode="manual" class="w-full"

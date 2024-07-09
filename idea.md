@@ -1,6 +1,4 @@
-* Fix collection date
-
----
+* Fix Auth
 
 * Migration from CSV to feed to DB
 * i18n (manual work)
@@ -14,9 +12,6 @@
 
 * Import old data
   * CSV import to update member roles (Firstname, Lastname, DOB if duplicates, new role) => update member role
-
-* Auth: Basic Auth (h3-basic-auth)
-  * Later on: proper user auth
 
 Tech:
 
@@ -35,10 +30,4 @@ Future:
 
 more:
 
-AssociationManager
-
 * "Breaks" for members (multiple join/leave dates)
-* Change Status manually, before/after payment
-  * Default for cash: No
-  * Default for SEPA: Yes 
-  * Also being able to get single SEPA file
