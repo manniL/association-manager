@@ -1,12 +1,17 @@
 <script setup lang="ts">
 // TODO: Fetch payments here later on
-const links = [[{
-  label: 'Payment #1',
-  to: '/finances/payments/1',
-}, {
-  label: 'Preview next payment',
+
+const { data: paymentList } = useFetch('/api/finances/payments') 
+
+const lastLink =  {
+  label: 'Preview Next Payment',
   to: '/finances/payments/',
-}]]
+}
+
+const links = computed(() => paymentList.value?.map((payment) => ({
+  label: `Payment #${payment.id} (${payment.collectionDate.split('T')[0]})`,
+  to: `/finances/payments/${payment.id}`
+}) ?? []).concat(lastLink))
 
 const route = useRoute()
 const isCreatePage = computed(() => route.path.endsWith('create'))
