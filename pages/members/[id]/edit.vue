@@ -21,7 +21,6 @@ useHead({
 })
 
 async function onSubmit (validateData: Schema) {
-  console.log(validateData)
   // TODO: https://github.com/unjs/nitro/issues/2389
   await $fetch<any>(`/api/members/${id}`, {
     method: 'PUT',

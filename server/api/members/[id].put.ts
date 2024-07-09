@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   const updatedEntry = await useDrizzle()
     .update(members)
     .set({
-      firstName, // TODO: Check why TS is complaining
+      firstName,
       lastName,
       company,
       gender,

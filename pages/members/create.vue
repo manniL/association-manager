@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Schema } from '~/components/MemberForm.vue'
 async function onSubmit (validateData: Schema) {
-  console.log(validateData)
   await $fetch('/api/members', {
     method: 'POST',
     body: validateData
