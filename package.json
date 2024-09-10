@@ -11,26 +11,27 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
-    "@nuxt/ui-pro": "^1.1.0",
-    "@nuxthub/core": "^0.5.11",
-    "@nuxtjs/i18n": "^8.3.1",
+    "@nuxt/ui-pro": "^1.4.2",
+    "@nuxthub/core": "^0.7.11",
+    "@nuxtjs/i18n": "^8.5.2",
     "date-fns": "^3.6.0",
-    "drizzle-orm": "^0.30.9",
+    "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
     "h3-basic-auth": "^0.0.1",
-    "maska": "^2.1.11",
-    "nuxt": "^3.11.2",
-    "sepa": "^1.1.0",
+    "maska": "^3.0.2",
+    "nuxt": "^3.13.1",
+    "sepa": "^2.0.0",
     "v-calendar": "^3.1.2",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue": "^3.5.4",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
-    "@nuxt/test-utils": "^3.13.1",
-    "drizzle-kit": "^0.20.17",
-    "happy-dom": "^14.12.3",
-    "vitest": "^2.0.1",
-    "wrangler": "^3.51.2",
-    "zod": "^3.22.5"
+    "@nuxt/test-utils": "^3.14.2",
+    "csvtojson": "^2.0.10",
+    "drizzle-kit": "^0.24.2",
+    "happy-dom": "^15.7.3",
+    "vitest": "^2.0.5",
+    "wrangler": "^3.75.0",
+    "zod": "^3.23.8"
   }
 }
