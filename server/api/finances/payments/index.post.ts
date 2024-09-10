@@ -12,11 +12,10 @@ export default defineEventHandler(async (event) => {
   const { startDate: possibleStartDate, collectionDate } = await readValidatedBody(event, paymentFormSchema.parse)
   const startDate = possibleStartDate ?? await getStartDateFromLastPayment()
 
-  // Fetch all members
   const [members, paymentRoles] = await Promise.all([
     $fetch('/api/members'),
-    $fetch('/api/finances/roles')]
-  )
+    $fetch('/api/finances/roles'),
+  ])
 
   // Transform as as needed
   const simplifiedMembers = simplifyMembers(members, paymentRoles)
@@ -25,12 +24,12 @@ export default defineEventHandler(async (event) => {
   const { payees, paymentDate } = getAllPayeeInformation(simplifiedMembers, startDate)
 
   // Calculate payment amount (non-monthly)
-
   const payeesWithPaymentAmount: SimplifiedMemberWithPayment[] = payees.map(payee => {
     const paymentSchedule = paymentScheduleOptions[payee.paymentSchedule]
     if (!paymentSchedule) {
       throw new Error(`Payment schedule ${payee.paymentSchedule} not found`)
     }
+    
     const paymentAmount = payee.paymentRole.amount * paymentSchedule
     return {
       ...payee,

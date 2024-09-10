@@ -2,9 +2,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   extends: ['@nuxt/ui-pro'],
   modules: ['@nuxt/ui', '@nuxthub/core', "@nuxtjs/i18n"],
+
+  ssr: false,
   hub: {
     database: true,
   },
+
   runtimeConfig: {
     auth: {
       sessionSecret: 'secret',
@@ -12,6 +15,7 @@ export default defineNuxtConfig({
       password: 'test'
     }
   },
+
   nitro: {
     replace: {
       'globalThis._importMeta_.vitest': 'undefined',
@@ -24,6 +28,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
   i18n: {
     strategy: 'no_prefix',
     locales: [
@@ -39,5 +44,7 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: 'lang',
     defaultLocale: 'en'
-  }
+  },
+
+  compatibilityDate: '2024-09-10'
 })

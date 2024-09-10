@@ -4,8 +4,7 @@ const isExistingPayment = computed(() => !!route.params.id)
 const { data, refresh: refreshPaymentInfo } = await useFetch(`/api/finances/payments/${route.params.id}`)
 
 const payees = computed(() => data.value?.payees ?? [])
-const date = computed(() => data.value?.collectionDate ? new Date(data.value.collectionDate) : new Date())
-const formattedDate = computed(() => date.value.toISOString().split('T')[0])
+const formattedDate = computed(() => data.value?.collectionDate ? new Date(data.value?.collectionDate).toISOString().split('T')[0] : '-')
 const sepaLink = computed(() => `/finances/payments/${route.params.id}/${formattedDate.value}.xml`)
 
 const { t } = useI18n()
@@ -84,7 +83,6 @@ useHead({
   <UDashboardPage>
     <UDashboardPanel grow>
       <UDashboardNavbar :title="`${t('payment.payment')} ${data?.id} - ${t('payment.misc.collectionAt')} ${data?.collectionDate}` " :badge="`${payees.length} ${t('membership.member', payees.length)}`" />
-
       <!-- TODO: Bring back loading -->
       <UTable v-model:sort="sort" :rows="payees" :columns="columns" sort-mode="manual" class="w-full"
         :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">

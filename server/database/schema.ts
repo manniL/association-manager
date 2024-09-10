@@ -17,7 +17,7 @@ export const paymentRoles = sqliteTable('payment_roles', {
 
 export const selectPaymentRoleSchema = createSelectSchema(paymentRoles);
 
-export const members = sqliteTable('members_2', {
+export const members = sqliteTable('members', {
   id: integer('id').primaryKey({ autoIncrement: true }),
 
   // Personal

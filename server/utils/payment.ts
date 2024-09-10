@@ -18,6 +18,7 @@ export type SimplifiedMember = {
 export function getAllPayeeInformation(members: SimplifiedMember[], previousPaymentDate: Date, iterations = 0) {
   // Failsafe at 13 months after -> No payment because nobody there
   if (iterations > 12) {
+    console.error(members, previousPaymentDate)
     throw new Error('No payees found after 12 months.')
   }
 
@@ -28,7 +29,7 @@ export function getAllPayeeInformation(members: SimplifiedMember[], previousPaym
   const paymentDate = getNextPaymentDate(previousPaymentDate)
 
   const possiblePayees = membersWithFee.filter(member => {
-    return member.joinDate! <= paymentDate && (!member.leaveDate || member.leaveDate > paymentDate)
+    return member.joinDate! <= paymentDate && (!member.leaveDate || member.leaveDate > paymentDate) && isInSchedule(paymentDate, member.paymentSchedule)
   })
 
   if (!possiblePayees.length) {
@@ -46,6 +47,26 @@ function getNextPaymentDate(previousPaymentDate: Date) {
   const nextPaymentDate = startOfMonth(addMonths(previousPaymentDate, 1))
   return nextPaymentDate
 }
+
+/**
+ * @returns Whether the payment date is in the payment schedule
+ */
+function isInSchedule(paymentDate: Date, paymentSchedule: string): boolean {
+  const month = paymentDate.getMonth() + 1
+  switch (paymentSchedule) {
+    case 'monthly':
+      return true
+    case 'quarterly':
+      return month === 3 || month === 6 || month === 9 || month === 12
+    case 'half-yearly':
+      return month === 6 || month === 12
+    case 'yearly':
+      return month === 12
+    default:
+      return false
+  }
+}
+
 
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest

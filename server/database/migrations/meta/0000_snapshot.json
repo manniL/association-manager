@@ -1,11 +1,11 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "29975302-ff98-46d5-8582-374dc27e7798",
+  "id": "717b0f9e-075b-48d7-9a3a-1d38bf7dc2d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "members_2": {
-      "name": "members_2",
+    "members": {
+      "name": "members",
       "columns": {
         "id": {
           "name": "id",
@@ -198,15 +198,15 @@
         }
       },
       "indexes": {
-        "members_2_email_unique": {
-          "name": "members_2_email_unique",
+        "members_email_unique": {
+          "name": "members_email_unique",
           "columns": [
             "email"
           ],
           "isUnique": true
         },
-        "members_2_membership_id_unique": {
-          "name": "members_2_membership_id_unique",
+        "members_membership_id_unique": {
+          "name": "members_membership_id_unique",
           "columns": [
             "membership_id"
           ],
@@ -214,9 +214,9 @@
         }
       },
       "foreignKeys": {
-        "members_2_payment_role_payment_roles_id_fk": {
-          "name": "members_2_payment_role_payment_roles_id_fk",
-          "tableFrom": "members_2",
+        "members_payment_role_payment_roles_id_fk": {
+          "name": "members_payment_role_payment_roles_id_fk",
+          "tableFrom": "members",
           "tableTo": "payment_roles",
           "columnsFrom": [
             "payment_role"
@@ -454,5 +454,8 @@
     "schemas": {},
     "tables": {},
     "columns": {}
+  },
+  "internal": {
+    "indexes": {}
   }
 }

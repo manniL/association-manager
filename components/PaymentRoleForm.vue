@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
-import { vMaska, type MaskInputOptions } from 'maska'
+import { vMaska } from 'maska/vue'
+import type { MaskInputOptions } from 'maska'
 import type { FormSubmitEvent } from '#ui/types'
 
 

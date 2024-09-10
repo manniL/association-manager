@@ -1,4 +1,4 @@
-CREATE TABLE `members_2` (
+CREATE TABLE `members` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`first_name` text NOT NULL,
 	`last_name` text NOT NULL,
@@ -64,5 +64,5 @@ CREATE TABLE `payments` (
 	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `members_2_email_unique` ON `members_2` (`email`);--> statement-breakpoint
-CREATE UNIQUE INDEX `members_2_membership_id_unique` ON `members_2` (`membership_id`);
+CREATE UNIQUE INDEX `members_email_unique` ON `members` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `members_membership_id_unique` ON `members` (`membership_id`);
