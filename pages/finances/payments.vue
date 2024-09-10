@@ -8,7 +8,7 @@ const { t } = useI18n()
 const links = computed(() => paymentList.value?.map((payment) : HorizontalNavigationLink => ({
   label: `${t('payment.payment')} #${payment.id} (${payment.collectionDate.split('T')[0]})`,
   to: `/finances/payments/${payment.id}`
-}) ?? []))
+})) ?? [])
 
 const route = useRoute()
 const isCreatePage = computed(() => route.path.endsWith('create'))
