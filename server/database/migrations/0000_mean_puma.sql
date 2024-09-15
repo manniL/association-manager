@@ -64,5 +64,4 @@ CREATE TABLE `payments` (
 	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `members_email_unique` ON `members` (`email`);--> statement-breakpoint
 CREATE UNIQUE INDEX `members_membership_id_unique` ON `members` (`membership_id`);

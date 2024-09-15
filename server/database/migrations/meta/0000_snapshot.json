@@ -198,13 +198,6 @@
         }
       },
       "indexes": {
-        "members_email_unique": {
-          "name": "members_email_unique",
-          "columns": [
-            "email"
-          ],
-          "isUnique": true
-        },
         "members_membership_id_unique": {
           "name": "members_membership_id_unique",
           "columns": [
