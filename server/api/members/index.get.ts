@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const columnToSort = query.sort as string;
   const order = query.order as string;
 
-  if (!Object.values(tables.members).includes(columnToSort)) {
+  if (!Object.keys(tables.members).includes(columnToSort)) {
     throw createError({
       message: "Invalid column name",
       status: 400,
