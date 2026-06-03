@@ -1,5 +1,6 @@
 // @ts-expect-error No types :(
 import sepa from 'sepa'
+import { sanitizeSepa } from './sepa-charset'
 
 export type SepaMemberEntry = {
   firstName: string,
@@ -32,25 +33,25 @@ export function createXmlForSepaPayment({ members, collectionDate, creditor, not
   const doc = new sepa.Document();
   doc.grpHdr.id = generateId();
   doc.grpHdr.created = new Date();
-  doc.grpHdr.initiatorName = creditor.name;
+  doc.grpHdr.initiatorName = sanitizeSepa(creditor.name);
 
   const info = doc.createPaymentInfo();
   info.collectionDate = collectionDate;
   info.creditorIBAN = creditor.iban;
   info.creditorBIC = creditor.bic;
-  info.creditorName = creditor.name;
+  info.creditorName = sanitizeSepa(creditor.name);
   info.creditorId = creditor.id
   doc.addPaymentInfo(info);
 
   members.forEach(member => {
     const tx = info.createTransaction();
-    tx.debtorName = member.accountHolder ?? `${member.firstName} ${member.lastName}`;
+    tx.debtorName = sanitizeSepa(member.accountHolder ?? `${member.firstName} ${member.lastName}`);
     tx.debtorIBAN = member.iban
     tx.debtorBIC = member.bic
     tx.mandateId = member.mandate.id
     tx.mandateSignatureDate = new Date(member.mandate.signatureDate);
     tx.amount = member.amountInCents / 100
-    tx.remittanceInfo = notes;
+    tx.remittanceInfo = sanitizeSepa(notes);
     tx.end2endId = generateId()
     info.addTransaction(tx);
   })
